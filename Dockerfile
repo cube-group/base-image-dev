@@ -74,7 +74,8 @@ apt-get install -y memcached && \
 apt-get install -y language-pack-en-base  && \
 local-gen en_US.UTF-8 && \
 apt-get install software-properties-common && \
-add-apt-repository ppa:ondrej/php && apt-get update &&
+add-apt-repository ppa:ondrej/php && \
+apt-get update && \
 apt-get install -y php7.2-fpm && \
 #php ext
 apt-get install -y php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-xml php7.2-opcache php7.2-gd \
@@ -87,7 +88,7 @@ pecl install xdebug && \
 wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
 tar zxf rabbitmq-c-0.7.1.tar.gz && \
 cd rabbitmq-c-0.7.1 && \
-./configure --prefix=/usr/local/rabbitmq-c-0.7.1 &
+./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
 make && make install && \
 
 
