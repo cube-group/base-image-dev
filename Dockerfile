@@ -75,8 +75,6 @@ apt-get install -y language-pack-en-base  && \
 local-gen en_US.UTF-8 && \
 apt-get install software-properties-common && \
 add-apt-repository ppa:ondrej/php && apt-get update &&
-LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && \
-apt-get update && \
 apt-get install -y php7.2-fpm && \
 #php ext
 apt-get install -y php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-xml php7.2-opcache php7.2-gd \
