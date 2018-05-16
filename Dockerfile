@@ -124,12 +124,22 @@ apt-get install -y  mongodb-org && \
 
 
 #install golang
+
 echo 'ok'
 
 
 #TODO 拷贝配置 启动脚本
+ADD scripts/ /extra
 
-#CMD ["sh","/scripts/start.sh"]
+
+WORKDIR $APP_PATH
+EXPOSE 80
+
+
+STOPSIGNAL SIGTERM
+
+CMD ["sh","/extra/start.sh"]
+
 
 
 
