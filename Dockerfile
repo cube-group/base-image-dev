@@ -77,7 +77,7 @@ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
-ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php &&
+ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php && \
 echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
 
 
