@@ -78,6 +78,8 @@ php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_S
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
 ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php &&
+echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
+
 
 #php.ini
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
