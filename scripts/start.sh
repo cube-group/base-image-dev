@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+
+
+#php-fpm
+
+#systemctl restart php-fpm7.2 #重启
+#systemctl start php-fpm7.2 #启动
+#systemctl stop php-fpm7.2 #关闭
+#systemctl status php-fpm7.2 #检查状态
+
+
+
 #nginx
 /usr/sbin/nginx
 

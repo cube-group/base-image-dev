@@ -16,7 +16,10 @@ ENV PHP_EXT_CONF_LINK_DIR /etc/php/7.2/mods-available
 ENV PHP_CONF /etc/php/7.2/fpm/php-fpm.conf
 ENV FPM_CONF /etc/php/7.2/fpm/pool.d/www.conf
 ENV PHP_DEV_INI /etc/php/7.2/cli/conf.d/dev.ini
-
+ENV FPM_MAX_CHILDREN 50
+ENV FPM_SLOWLOG /var/log/fpm-slow.log
+ENV FPM_SLOWLOG_TIMEOUT 2
+ENV FPM_SOCK_FILE /var/run/php-fpm.sock
 
 
 #修改为国内镜像源
@@ -40,9 +43,10 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe" >>/etc/apt
 echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/apt/sources.list && \
 apt-get update
 
+
+
 #install tools
 RUN apt-get install -y gcc autoconf curl wget vim libxml2 libxml2-dev libssl-dev bzip2 libbz2-dev libjpeg-dev  libpng12-dev libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev
-
 
 
 
@@ -76,6 +80,23 @@ COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
 COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
 COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_DIR}/dev.ini
 
+#php-fpm配置
+RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FPM_CONF} && \
+    sed -i "s#pm.max_children = 5#pm.max_children = ${FPM_MAX_CHILDREN}#g" ${FPM_CONF} && \
+    sed -i "s#pm.start_servers = 2#pm.start_servers = 5#g" ${FPM_CONF} && \
+    sed -i "s#pm.min_spare_servers = 1#pm.min_spare_servers = 4#g" ${FPM_CONF} && \
+    sed -i "s#pm.max_spare_servers = 3#pm.max_spare_servers = 6#g" ${FPM_CONF} && \
+    sed -i "s#;pm.max_requests = 500#pm.max_requests = 200#g" ${FPM_CONF} && \
+    sed -i "s#;request_slowlog_timeout = 0#request_slowlog_timeout = ${FPM_SLOWLOG_TIMEOUT}#g" ${FPM_CONF} && \
+    sed -i "s#user = www-data#user = nginx#g" ${FPM_CONF} && \
+    sed -i "s#group = www-data#group = nginx#g" ${FPM_CONF} && \
+    sed -i "s#;listen.mode = 0660#listen.mode = 0666#g" ${FPM_CONF} && \
+    sed -i "s#;listen.owner = www-data#listen.owner = nginx#g" ${FPM_CONF} && \
+    sed -i "s#;listen.group = www-data#listen.group = nginx#g" ${FPM_CONF} && \
+    sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = ${FPM_SOCK_FILE}" ${FPM_CONF} && \
+    touch ${FPM_SLOWLOG} && \
+    echo "slowlog = ${FPM_SLOWLOG}" >> ${fpm_conf}
+
 
 
 #install nginx
@@ -91,17 +112,16 @@ RUN apt-get install -y redis-server
 RUN apt-get install -y memcached
 
 
-
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
 
 
 
 #install mongodb
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
-apt-get update && \
-apt-get install -y  mongodb-org
+#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
+#echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
+#apt-get update && \
+#apt-get install -y  mongodb-org
 
 
 
