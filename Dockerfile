@@ -66,7 +66,7 @@ pecl install xdebug && \
 wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
 tar zxf rabbitmq-c-0.7.1.tar.gz && \
 cd rabbitmq-c-0.7.1 && \
-./configure --prefix=/usr/local/rabbitmq-c-0.7.1
+./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
 make && make install
 
 
@@ -83,7 +83,7 @@ php -r "unlink('composer-setup.php');"
 
 
 #install nodeJs
-RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz
+RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
 tar -xvf node-v8.9.3-linux-x64.tar.xz && \
 mv node-v8.9.3-linux-x64 /usr/local && \
 ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
