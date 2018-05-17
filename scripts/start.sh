@@ -3,7 +3,7 @@
 
 #php-fpm
 if [ ! -z "$ENABLE_PHP_FPM" ]; then
-    php-fpm
+    /usr/sbin/php-fpm7.2
 fi
 
 
