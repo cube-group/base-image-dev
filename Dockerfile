@@ -37,7 +37,6 @@ apt-get update
 #install tools
 RUN apt-get install -y curl \
     wget \
-    curl \
     python \
     python-dev \
     py-pip \
