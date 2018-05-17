@@ -96,8 +96,7 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
     sed -i "s#;listen.owner = www-data#listen.owner = nginx#g" ${FPM_CONF} && \
     sed -i "s#;listen.group = www-data#listen.group = nginx#g" ${FPM_CONF} && \
     sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = ${FPM_SOCK_FILE}" ${FPM_CONF} && \
-    sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF} && \
-    touch ${FPM_SLOWLOG}
+    sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF}
 
 
 
