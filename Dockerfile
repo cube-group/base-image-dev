@@ -97,9 +97,9 @@ RUN git clone git://github.com/alanxz/rabbitmq-c.git && \
 cd rabbitmq-c && \
 git submodule init && \
 git submodule update && \
-autoreconf -i && ./configure && make && sudo make install && \
+autoreconf -i && ./configure && make && sudo make install
 #amqp
-wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
+RUN wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
 tar zxf amqp-1.9.3.tgz && \
 cd amqp-1.9.3 && \
 phpize && \
