@@ -27,8 +27,6 @@ ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
 ENV php_vars /usr/local/etc/php/conf.d/docker-vars.ini
 
 
-
-
 #修改为国内镜像源
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
 echo "deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties" >>/etc/apt/sources.list && \
