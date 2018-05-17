@@ -45,11 +45,6 @@ RUN apt-get install -y curl \
 
 
 
-#install nginx
-RUN apt-get install -y nginx
-
-
-
 #install php-fpm 7.2
 RUN apt-get install -y language-pack-en-base && \
 apt-get install software-properties-common && \
@@ -71,6 +66,12 @@ tar zxf rabbitmq-c-0.7.1.tar.gz && \
 cd rabbitmq-c-0.7.1 && \
 ./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
 make && make install
+
+
+#install nginx
+RUN apt-get install -y nginx
+
+
 
 
 #TODO 生成配置,替换配置选项
