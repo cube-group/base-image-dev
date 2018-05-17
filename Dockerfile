@@ -28,6 +28,9 @@ ENV APP_PATH /var/www/html
 ENV APP_PATH_INDEX /var/www/html
 ENV APP_PATH_404 /var/www/html
 
+#MSYQL环境变量
+ENV MYSQL_PASSWORD root
+
 
 #修改为国内镜像源
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
@@ -82,8 +85,8 @@ php -r "unlink('composer-setup.php');" && \
 ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
 echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
 #php.ini
-COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
-COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
+COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_DIR}/xdebug.ini
+COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_DIR}/opcache.ini
 COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_DIR}/yaf.ini
 COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_DIR}/dev.ini
 #php-fpm配置
@@ -140,15 +143,16 @@ apt-get install -y  mongodb-org
 RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
 tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
 echo "export GOOROOT=/usr/local/go" >> /etc/profile && \
-echo "export PATH=\$PATH:\$GOROOT/bin" >> /etc/profile
+echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile && \
+source /etc/profile && \
+go version
 
 
+#install mysql
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client
 
-#install mysql TODO
-RUN yes|apt-get install -y -q mysql-server mysql-client
 
-
-#TODO 拷贝配置 启动脚本
+#copy scripts
 ADD scripts/ /extra
 
 

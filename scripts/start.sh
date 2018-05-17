@@ -12,24 +12,29 @@ php-fpm
 
 
 
-#radis
+#redis
 redis-server &
 
 
-#rabbitmq
-#rabbitmq-server &
-#启动web界面 localhost:15672
-#rabbitmq-plugins enable rabbitmq_management
-
-
 #mysql
-#/etc/init.d/mysql start
+service mysql start
+
+
+#memcached
+
 
 
 #mongodb
 #service mongod start
 #service mongodb stop
 #mongod --dbpath /mongodb/data/data  --port 27017 --logpath /mongodb/logs --logappend
+
+
+
+#rabbitmq
+#rabbitmq-server &
+#启动web界面 localhost:15672
+#rabbitmq-plugins enable rabbitmq_management
 
 
 
