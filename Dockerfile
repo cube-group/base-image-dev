@@ -11,8 +11,6 @@ ENV PHP_EXT_CONF_DIR /etc/php/7.2/cli/conf.d
 
 
 
-
-
 #修改为国内镜像源
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
 echo "deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties" >>/etc/apt/sources.list && \
@@ -40,9 +38,8 @@ RUN apt-get install -y curl \
     autoconf
 
 
-
 #install php-fpm 7.2
-RUN apt-get install -y language-pack-en-base && \
+RUN apt-get install -y language-pack-en-base local-gen en_US.UTF-8 && \
 apt-get install software-properties-common && \
 add-apt-repository ppa:ondrej/php && \
 apt-get update && \
@@ -56,19 +53,13 @@ pecl install yaf && \
 pecl install xdebug && \
 
 
+
 #rabbimq ext
 wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
 tar zxf rabbitmq-c-0.7.1.tar.gz && \
 cd rabbitmq-c-0.7.1 && \
 ./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
 make && make install
-
-
-#install nginx
-RUN apt-get install -y nginx
-
-
-
 
 #TODO 生成配置,替换配置选项
 
@@ -81,9 +72,8 @@ php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');"
 
 
-
-
-
+#install nginx
+RUN apt-get install -y nginx
 
 
 
