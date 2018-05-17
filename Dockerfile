@@ -77,7 +77,8 @@ php -r "unlink('composer-setup.php');"
 
 #php.ini配置
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
-COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
+COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
+COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_DIR}/yaf.ini
 COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_DIR}/dev.ini
 
 #php-fpm配置
