@@ -50,8 +50,7 @@ RUN apt-get install -y memcached
 
 
 #install php-fpm 7.2
-RUN apt-get install -y language-pack-en-base
-local-gen en_US.UTF-8 && \
+RUN apt-get install -y language-pack-en-base local-gen en_US.UTF-8 && \
 apt-get install software-properties-common && \
 add-apt-repository ppa:ondrej/php && \
 apt-get update && \
