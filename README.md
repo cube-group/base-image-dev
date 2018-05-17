@@ -38,6 +38,8 @@ root@66ed3f50bd6d:/# npm -v
 ```
 
 
+##TODO 全局安装单元测试 phpunit
+
 
 ##mongodb
 ```

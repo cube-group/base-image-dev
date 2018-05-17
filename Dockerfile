@@ -78,6 +78,7 @@ php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_S
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
 ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
+mkdir /run/php && \
 #php-fpm.conf
 sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FPM_CONF} && \
 sed -i "s#pm.max_children = 5#pm.max_children = ${FPM_MAX_CHILDREN}#g" ${FPM_CONF} && \
