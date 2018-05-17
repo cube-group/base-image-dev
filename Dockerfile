@@ -93,18 +93,8 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
 
 
 #rabbimq-c
-RUN git clone git://github.com/alanxz/rabbitmq-c.git && \
-cd rabbitmq-c && \
-git submodule init && \
-git submodule update && \
-autoreconf -i && ./configure && make && sudo make install
-#amqp
-RUN wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
-tar zxf amqp-1.9.3.tgz && \
-cd amqp-1.9.3 && \
-phpize && \
-./configure --with-amqp && \
-make && make install && \
+RUN apt-get install -y librabbitmq-dev && \
+pecl install amqp && \
 echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
 
 #install composer
