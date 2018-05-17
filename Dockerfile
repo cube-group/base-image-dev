@@ -6,10 +6,16 @@ MAINTAINER chenqionghe development "chenqionghe@sina.com"
 USER root
 
 #TODO ENV 环境变量
+
+
 #php扩展文件夹
 ENV PHP_EXT_CONF_DIR /etc/php/7.2/cli/conf.d
+ENV PHP_EXT_CONF_LINK_DIR /etc/php/7.2/mods-available
 
-
+#以下不要覆盖
+ENV PHP_CONF /etc/php/7.2/fpm/php-fpm.conf
+ENV FPM_CONF /etc/php/7.2/fpm/pool.d/www.conf
+ENV PHP_DEV_INI /etc/php/7.2/cli/conf.d/dev.ini
 
 
 
@@ -35,7 +41,9 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/a
 apt-get update
 
 #install tools
-RUN apt-get install -y curl wget
+RUN apt-get install -y gcc autoconf curl wget vim libxml2 libxml2-dev libssl-dev bzip2 libbz2-dev libjpeg-dev  libpng12-dev libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev
+
+
 
 
 #install php-fpm 7.2
@@ -63,9 +71,10 @@ php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_S
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');"
 
-
-COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_DIR}/20-xdebug.ini
-COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_DIR}/10-xdebug.ini
+#php.ini配置
+COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
+COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
+COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_DIR}/dev.ini
 
 
 
@@ -73,23 +82,13 @@ COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_DIR}/10-xdebug.ini
 RUN apt-get install -y nginx
 
 
-
-
-
 #install redis
 RUN apt-get install -y redis-server
 
 
 
-
-
 #install memcache
 RUN apt-get install -y memcached
-
-
-
-
-
 
 
 
@@ -107,9 +106,8 @@ apt-get install -y  mongodb-org
 
 
 
-
-#install mysql
-RUN apt-get install -y  -q mysql-server mysql-client
+#install mysql TODO
+#RUN apt-get install -y  -q mysql-server mysql-client
 
 
 
