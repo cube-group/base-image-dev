@@ -93,13 +93,11 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
 
 
 #rabbimq-c
-RUN wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.8.0/rabbitmq-c-0.8.0.tar.gz
-tar -zxvf rabbitmq-c-0.8.0.tar.gz&& \
-cd rabbitmq-c-0.8.0&& \
-./configure --prefix=/usr/local/rabbitmq-c&& \
-make&& \
-make install && \
-
+RUN wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.8.0/rabbitmq-c-0.8.0.tar.gz && \
+tar -zxvf rabbitmq-c-0.8.0.tar.gz && \
+cd rabbitmq-c-0.8.0 && \
+./configure --prefix=/usr/local/rabbitmq-c && \
+make && make install && \
 #amqp
 wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
 tar zxf amqp-1.9.3.tgz && \
