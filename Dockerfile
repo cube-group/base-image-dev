@@ -7,25 +7,6 @@ USER root
 
 #TODO ENV 环境变量
 
-ENV APP_NAME dev
-ENV APP_PATH /var/www/html
-ENV APP_PATH_INDEX /var/www/html
-ENV APP_PATH_404 /var/www/html
-#ENV APP_MONITOR_HOOK DINGTALK-HOOK
-
-ENV PHP_MEM_LIMIT 512M
-ENV PHP_POST_MAX_SIZE 100M
-ENV PHP_UPLOAD_MAX_FILESIZE 100M
-
-ENV FPM_MAX_CHILDREN 50
-ENV FPM_SLOWLOG /var/log/fpm-slow.log
-ENV FPM_SLOWLOG_TIMEOUT 2
-
-#以下不要覆盖
-ENV php_conf /usr/local/etc/php-fpm.conf
-ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
-ENV php_vars /usr/local/etc/php/conf.d/docker-vars.ini
-
 
 #修改为国内镜像源
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
