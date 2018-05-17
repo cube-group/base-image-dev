@@ -11,6 +11,8 @@ ENV PHP_EXT_CONF_DIR /etc/php/7.2/cli/conf.d
 
 
 
+
+
 #修改为国内镜像源
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
 echo "deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties" >>/etc/apt/sources.list && \
@@ -33,42 +35,34 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/a
 apt-get update
 
 #install tools
-RUN apt-get install -y curl \
-    wget \
-    autoconf
+RUN apt-get install curl wget
 
 
 #install php-fpm 7.2
-RUN apt-get install -y software-properties-common && \
+RUN apt-get install -y language-pack-en-base && \
+apt-get install software-properties-common && \
 add-apt-repository ppa:ondrej/php && \
-apt-get update
-
-RUN apt-get install -y php7.2-fpm
+apt-get update && \
+apt-get install -y php7.2-fpm && \
 #php ext
-RUN apt-get install -y php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-xml php7.2-opcache php7.2-gd \
+apt-get install -y php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-xml php7.2-opcache php7.2-gd \
 php7.2-mongodb php7.2-redis php7.2-memcached php7.2-dev && \
 #yaf ext
 pecl install yaf && \
 #xdebug ext
-pecl install xdebug
-
+pecl install xdebug && \
 #rabbimq ext
-#wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
-#RUN tar zxf rabbitmq-c-0.7.1.tar.gz && \
-#cd rabbitmq-c-0.7.1 && \
-#./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
-#make && make install
-
-#TODO 生成配置,替换配置选项
-
-
+wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
+tar zxf rabbitmq-c-0.7.1.tar.gz && \
+cd rabbitmq-c-0.7.1 && \
+./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
+make && make install && \
 #install composer
-RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
+EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');"
-
 
 
 
@@ -79,12 +73,15 @@ RUN apt-get install -y nginx
 
 
 
+
+
 #install redis
 RUN apt-get install -y redis-server
 
 
 #install memcache
 RUN apt-get install -y memcached
+
 
 
 #install nodeJs
@@ -106,8 +103,11 @@ apt-get update && \
 apt-get install -y  mongodb-org
 
 
+
+
 #install mysql
 RUN apt-get install -y  -q mysql-server mysql-client
+
 
 
 #install golang
