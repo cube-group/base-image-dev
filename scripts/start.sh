@@ -3,6 +3,7 @@
 
 
 #php-fpm
+php-fpm
 
 #systemctl restart php-fpm7.2 #重启
 #systemctl start php-fpm7.2 #启动
@@ -12,7 +13,7 @@
 
 
 #nginx
-/usr/sbin/nginx
+/usr/sbin/nginx -g "daemon off; error_log /dev/stderr info;"
 
 #mysql
 #/etc/init.d/mysql start
