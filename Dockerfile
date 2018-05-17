@@ -55,7 +55,7 @@ apt-get update
 
 
 #install tools
-RUN apt-get install -y gcc autoconf curl wget vim libxml2 libxml2-dev libssl-dev bzip2 libbz2-dev libjpeg-dev  libpng12-dev libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev
+RUN apt-get install -y gcc autoconf curl git wget vim libxml2 libxml2-dev libssl-dev bzip2 libbz2-dev libjpeg-dev  libpng12-dev libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev
 
 
 #install php-fpm 7.2
@@ -93,17 +93,17 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
 
 
 #rabbimq-c
-RUN wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.8.0/rabbitmq-c-0.8.0.tar.gz && \
-tar -C /usr/local -zxvf rabbitmq-c-0.8.0.tar.gz && \
-cd /usr/local/rabbitmq-c-0.8.0 && \
-./configure --prefix=/usr/local/rabbitmq-c && \
-make && make install && \
+RUN git clone git://github.com/alanxz/rabbitmq-c.git && \
+cd rabbitmq-c && \
+git submodule init && \
+git submodule update && \
+autoreconf -i && ./configure && make && sudo make install && \
 #amqp
 wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
 tar zxf amqp-1.9.3.tgz && \
 cd amqp-1.9.3 && \
 phpize && \
-./configure --with-php-config=/usr/bin/php-config --with-amqp --with-librabbitmq-dir=/usr/local/rabbitmq-c-0.8.0 && \
+./configure --with-amqp && \
 make && make install && \
 echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
 
