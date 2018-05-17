@@ -17,7 +17,7 @@ redis-server &
 
 
 #rabbitmq
-#service rabbitmq-service start
+#rabbitmq-server &
 #启动web界面 localhost:15672
 #rabbitmq-plugins enable rabbitmq_management
 
@@ -28,7 +28,10 @@ redis-server &
 
 #mongodb
 #service mongod start
-#配置 /etc/mongod.conf
+#service mongodb stop
+#mongod --dbpath /mongodb/data/data  --port 27017 --logpath /mongodb/logs --logappend
+
+
 
 
 #nginx

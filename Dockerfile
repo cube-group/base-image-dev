@@ -2,17 +2,19 @@ FROM ubuntu:16.04
 
 MAINTAINER chenqionghe development "chenqionghe@sina.com"
 
-
 USER root
 
-#TODO ENV 环境变量
+#软件开启环境变量
+ENV ENABLE_PHP_FPM 1
+ENV ENABLE_MYSQL 1
+ENV ENABLE_MEMCACHED 1
+ENV ENABLE_REDIS 1
+ENV ENABLE_RABBITMQ 1
+ENV ENABLE_MONGODB 1
 
-
-#php扩展文件夹
+#php环境变量
 ENV PHP_EXT_CONF_DIR /etc/php/7.2/cli/conf.d
 ENV PHP_EXT_CONF_LINK_DIR /etc/php/7.2/mods-available
-
-#以下不要覆盖
 ENV PHP_CONF /etc/php/7.2/fpm/php-fpm.conf
 ENV FPM_CONF /etc/php/7.2/fpm/pool.d/www.conf
 ENV PHP_DEV_INI /etc/php/7.2/cli/conf.d/dev.ini
@@ -21,6 +23,10 @@ ENV FPM_SLOWLOG /var/log/fpm-slow.log
 ENV FPM_SLOWLOG_TIMEOUT 2
 ENV FPM_SOCK_FILE /var/run/php-fpm.sock
 
+#nginx环境变量
+ENV APP_PATH /var/www/html
+ENV APP_PATH_INDEX /var/www/html
+ENV APP_PATH_404 /var/www/html
 
 
 #修改为国内镜像源
@@ -45,12 +51,8 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/a
 apt-get update
 
 
-
 #install tools
 RUN apt-get install -y gcc autoconf curl wget vim libxml2 libxml2-dev libssl-dev bzip2 libbz2-dev libjpeg-dev  libpng12-dev libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev
-
-
-
 
 
 #install php-fpm 7.2
@@ -79,14 +81,11 @@ php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
 ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
 echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
-
-
 #php.ini
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
 COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
 COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_DIR}/yaf.ini
 COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_DIR}/dev.ini
-
 #php-fpm配置
 RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FPM_CONF} && \
     sed -i "s#pm.max_children = 5#pm.max_children = ${FPM_MAX_CHILDREN}#g" ${FPM_CONF} && \
@@ -103,8 +102,6 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
 
 
 
-
-
 #install nginx
 RUN apt-get install -y nginx
 #conf
@@ -116,18 +113,12 @@ ADD nginx/default.conf /etc/nginx/sites-enabled/default
 RUN apt-get install -y redis-server
 
 
-
 #install memcached
 RUN apt-get install -y memcached
 
 
-
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
-
-
-
-
 
 
 #install nodeJs
@@ -138,17 +129,21 @@ ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
 ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm
 
 
-
-
-
-
-
 #install mongodb
-#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
-#echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
-#apt-get update && \
-#apt-get install -y  mongodb-org
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
+echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
+apt-get update && \
+apt-get install -y  mongodb-org
 
+
+#install golang
+RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
+tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
+mkdir -p ~/go/src && \
+echo "export GOPATH=$HOME/go" >> /etc/profile && \
+echo "export PATH=$PATH:$GOPATH/bin:/usr/local/go/bin" >> /etc/profile && \
+source /etc/profile && \
+go version
 
 
 
@@ -156,16 +151,12 @@ ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm
 #RUN apt-get install -y  -q mysql-server mysql-client
 
 
-
-#install golang
-
-
-
 #TODO 拷贝配置 启动脚本
 ADD scripts/ /extra
 
 
-EXPOSE 80
+EXPOSE 80 9000 3306 6379 11211 27017
+EXPOSE 4369 5672 5671 15672 61613 61614 1883 8883
 
 
 STOPSIGNAL SIGTERM
