@@ -52,11 +52,9 @@ echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted 
 echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe" >>/etc/apt/sources.list && \
 echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/apt/sources.list && \
 apt-get update && \
-
 #install tools
 apt-get install -y gcc autoconf curl git wget vim libxml2 libxml2-dev libssl-dev bzip2 libbz2-dev libjpeg-dev  libpng12-dev \
 libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev && \
-
 #install php-fpm 7.2
 RUN apt-get install -y software-properties-common && \
 LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
@@ -120,7 +118,7 @@ apt-get update && \
 apt-get install -y  mongodb-org && \
 
 #install mysql
-DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client
+DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
 
 #install golang
 curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
