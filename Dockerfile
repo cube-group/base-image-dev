@@ -48,30 +48,30 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted" >>/
 echo "deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties" >>/etc/apt/sources.list && \
 echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe" >>/etc/apt/sources.list && \
 echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/apt/sources.list && \
-apt-get update && \
+apt-get update
 
 #install tools
-apt-get install curl wget && \
+RUN apt-get install curl wget
 
 
 #install nginx
-apt-get install -y nginx && \
+RUN apt-get install -y nginx
 
 
 #install mysql
-apt-get install -y mysql-server mysql-client && \
+RUN apt-get install -y mysql-server mysql-client
 
 
 #install redis
-apt-get install -y redis-server && \
+RUN apt-get install -y redis-server
 
 
 #install memcache
-apt-get install -y memcached && \
+RUN apt-get install -y memcached
 
 
 #install php-fpm 7.2
-apt-get install -y language-pack-en-base  && \
+RUN apt-get install -y language-pack-en-base
 local-gen en_US.UTF-8 && \
 apt-get install software-properties-common && \
 add-apt-repository ppa:ondrej/php && \
@@ -88,44 +88,43 @@ pecl install xdebug && \
 wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
 tar zxf rabbitmq-c-0.7.1.tar.gz && \
 cd rabbitmq-c-0.7.1 && \
-./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
-make && make install && \
+./configure --prefix=/usr/local/rabbitmq-c-0.7.1
+make && make install
 
 
 #TODO 生成配置,替换配置选项
 
 
 #install composer
-EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
+RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
-php -r "unlink('composer-setup.php');"  && \
+php -r "unlink('composer-setup.php');"
 
 
 
 #install nodeJs
-wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
+RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz
 tar -xvf node-v8.9.3-linux-x64.tar.xz && \
 mv node-v8.9.3-linux-x64 /usr/local && \
 ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
-ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm && \
+ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm
 
 
 #install rabbimq
-apt-get install -y rabbitmq-server && \
+RUN apt-get install -y rabbitmq-server
 
 
 #install mongodb
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
 echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
 apt-get update && \
-apt-get install -y  mongodb-org && \
+apt-get install -y  mongodb-org
 
 
 #install golang
 
-echo 'ok'
 
 
 #TODO 拷贝配置 启动脚本
