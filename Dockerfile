@@ -35,11 +35,11 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/a
 apt-get update
 
 #install tools
-RUN apt-get install curl wget
+RUN apt-get install -y curl wget
 
 
 #install php-fpm 7.2
-RUN apt-get install software-properties-common && \
+RUN apt-get install -y software-properties-common && \
 add-apt-repository ppa:ondrej/php && \
 apt-get update && \
 apt-get install -y php7.2-fpm && \
