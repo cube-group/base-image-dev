@@ -83,7 +83,7 @@ cd amqp-1.9.3 && \
 phpize && \
 ./configure --with-php-config=/usr/bin/php-config --with-amqp --with-librabbitmq-dir=/usr/local/rabbitmq-c-0.7.1 && \
 make && make install && \
-echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
+echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini && \
 #install composer
 EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
