@@ -12,14 +12,8 @@ php-fpm
 
 
 
-#nginx
-/usr/sbin/nginx -g "daemon off; error_log /dev/stderr info;"
-
-#mysql
-#/etc/init.d/mysql start
-
 #radis
-#redis-server &
+redis-server &
 
 
 #rabbitmq
@@ -28,6 +22,14 @@ php-fpm
 #rabbitmq-plugins enable rabbitmq_management
 
 
+#mysql
+#/etc/init.d/mysql start
+
+
 #mongodb
 #service mongod start
 #配置 /etc/mongod.conf
+
+
+#nginx
+/usr/sbin/nginx -g "daemon off; error_log /dev/stderr info;"

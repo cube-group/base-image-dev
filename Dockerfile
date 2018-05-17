@@ -77,7 +77,7 @@ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
-ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php && \
+ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
 echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
 
 
@@ -96,8 +96,6 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
     sed -i "s#pm.max_spare_servers = 3#pm.max_spare_servers = 6#g" ${FPM_CONF} && \
     sed -i "s#;pm.max_requests = 500#pm.max_requests = 200#g" ${FPM_CONF} && \
     sed -i "s#;request_slowlog_timeout = 0#request_slowlog_timeout = ${FPM_SLOWLOG_TIMEOUT}#g" ${FPM_CONF} && \
-    sed -i "s#user = www-data#user = nginx#g" ${FPM_CONF} && \
-    sed -i "s#group = www-data#group = nginx#g" ${FPM_CONF} && \
     sed -i "s#;listen.mode = 0660#listen.mode = 0666#g" ${FPM_CONF} && \
     sed -i "s#;listen.owner = www-data#listen.owner = nginx#g" ${FPM_CONF} && \
     sed -i "s#;listen.group = www-data#listen.group = nginx#g" ${FPM_CONF} && \
@@ -110,14 +108,9 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
 
 #install nginx
 RUN apt-get install -y nginx
-
-
-
 #conf
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
 ADD nginx/default.conf /etc/nginx/sites-enabled/default
-
-
 
 
 #install redis
@@ -125,12 +118,8 @@ RUN apt-get install -y redis-server
 
 
 
-
-
-#install memcache
+#install memcached
 RUN apt-get install -y memcached
-
-
 
 
 
