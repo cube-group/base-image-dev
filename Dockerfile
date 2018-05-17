@@ -93,10 +93,10 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
 
 
 #rabbimq-c
-RUN wget -c https://github.com/alanxz/rabbitmq-c/releases/download/v0.8.0/rabbitmq-c-0.8.0.tar.gz && \
-tar zxf rabbitmq-c-0.8.0.tar.gz && \
-cd rabbitmq-c-0.8.0 && \
-./configure --prefix=/usr/local/rabbitmq-c-0.8.0 && \
+RUN wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
+tar zxf rabbitmq-c-0.7.1.tar.gz && \
+cd rabbitmq-c-0.7.1 && \
+./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
 make && make install && \
 #amqp
 wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
@@ -109,7 +109,7 @@ echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
 
 #install composer
 RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+php -r "copy('https://getcomposer.org/installer', 'composer-setu      p.php');" && \
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
