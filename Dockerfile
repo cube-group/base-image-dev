@@ -64,6 +64,8 @@ php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');"
 
 
+COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_DIR}/20-xdebug.ini
+COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_DIR}/10-xdebug.ini
 
 
 
