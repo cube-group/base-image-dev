@@ -51,6 +51,8 @@ RUN apt-get install -y gcc autoconf curl wget vim libxml2 libxml2-dev libssl-dev
 
 
 
+
+
 #install php-fpm 7.2
 RUN apt-get install -y software-properties-common && \
 LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
@@ -74,12 +76,14 @@ EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
-php -r "unlink('composer-setup.php');"
+php -r "unlink('composer-setup.php');" && \
+ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php &&
 
-#php.ini配置
+#php.ini
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
 COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
 COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_DIR}/yaf.ini
+COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_DIR}/amqp.ini
 COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_DIR}/dev.ini
 
 #php-fpm配置
@@ -100,8 +104,18 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
 
 
 
+
+
 #install nginx
 RUN apt-get install -y nginx
+
+
+
+#conf
+ADD nginx/nginx.conf /etc/nginx/nginx.conf
+ADD nginx/default.conf /etc/nginx/sites-enabled/default
+
+
 
 
 #install redis
@@ -109,12 +123,20 @@ RUN apt-get install -y redis-server
 
 
 
+
+
 #install memcache
 RUN apt-get install -y memcached
 
 
+
+
+
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
+
+
+
 
 
 
@@ -124,6 +146,9 @@ tar -xvf node-v8.9.3-linux-x64.tar.xz && \
 mv node-v8.9.3-linux-x64 /usr/local && \
 ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
 ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm
+
+
+
 
 
 
