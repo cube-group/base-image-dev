@@ -141,7 +141,6 @@ RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
 tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz
 RUN echo "export GOOROOT=/usr/local/go" >> /etc/profile
 RUN echo "export PATH=\$PATH:\$GOROOT/bin" >> /etc/profile
-RUN go version
 
 
 
