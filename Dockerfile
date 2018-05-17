@@ -39,8 +39,7 @@ RUN apt-get install curl wget
 
 
 #install php-fpm 7.2
-RUN apt-get install -y language-pack-en-base && \
-apt-get install software-properties-common && \
+RUN apt-get install software-properties-common && \
 add-apt-repository ppa:ondrej/php && \
 apt-get update && \
 apt-get install -y php7.2-fpm && \
