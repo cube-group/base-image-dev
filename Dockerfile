@@ -40,7 +40,7 @@ RUN apt-get install -y curl wget
 
 #install php-fpm 7.2
 RUN apt-get install -y software-properties-common && \
-add-apt-repository ppa:ondrej/php && \
+LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
 apt-get update && \
 apt-get install -y php7.2-fpm && \
 #php ext
@@ -78,21 +78,22 @@ RUN apt-get install -y nginx
 RUN apt-get install -y redis-server
 
 
+
+
+
 #install memcache
 RUN apt-get install -y memcached
 
 
 
-#install nodeJs
-RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
-tar -xvf node-v8.9.3-linux-x64.tar.xz && \
-mv node-v8.9.3-linux-x64 /usr/local && \
-ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
-ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm
+
+
+
 
 
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
+
 
 
 #install mongodb
@@ -104,8 +105,20 @@ apt-get install -y  mongodb-org
 
 
 
+
 #install mysql
 RUN apt-get install -y  -q mysql-server mysql-client
+
+
+
+
+
+#install nodeJs
+RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
+tar -xvf node-v8.9.3-linux-x64.tar.xz && \
+mv node-v8.9.3-linux-x64 /usr/local && \
+ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
+ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm
 
 
 
