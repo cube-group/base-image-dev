@@ -140,8 +140,8 @@ apt-get install -y  mongodb-org
 RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
 tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
 mkdir -p ~/go/src && \
-echo "export GOPATH=$HOME/go" >> /etc/profile && \
-echo "export PATH=$PATH:$GOPATH/bin:/usr/local/go/bin" >> /etc/profile && \
+echo "export GOPATH=\$HOME/go" >> /etc/profile && \
+echo "export PATH=\$PATH:\$GOPATH/bin:/usr/local/go/bin" >> /etc/profile && \
 source /etc/profile && \
 go version
 
