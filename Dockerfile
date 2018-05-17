@@ -93,19 +93,19 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
 
 
 #rabbimq-c
-RUN wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
-tar zxf rabbitmq-c-0.7.1.tar.gz && \
-cd rabbitmq-c-0.7.1 && \
-./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
-make && make install && \
-#amqp
-wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
-tar zxf amqp-1.9.3.tgz && \
-cd amqp-1.9.3 && \
-phpize && \
-./configure --with-php-config=/usr/bin/php-config --with-amqp --with-librabbitmq-dir=/usr/local/rabbitmq-c-0.7.1 && \
-make && make install && \
-echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
+#RUN wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
+#tar zxf rabbitmq-c-0.7.1.tar.gz && \
+#cd rabbitmq-c-0.7.1 && \
+#./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
+#make && make install && \
+##amqp
+#wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
+#tar zxf amqp-1.9.3.tgz && \
+#cd amqp-1.9.3 && \
+#phpize && \
+#./configure --with-php-config=/usr/bin/php-config --with-amqp --with-librabbitmq-dir=/usr/local/rabbitmq-c-0.7.1 && \
+#make && make install && \
+#echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
 
 #install composer
 RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \

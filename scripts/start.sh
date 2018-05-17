@@ -1,27 +1,31 @@
 #!/usr/bin/env bash
 
 
-
 #php-fpm
-php-fpm
+if [ ! -z "$ENABLE_PHP_FPM" ]; then
+    php-fpm
+fi
 
-#systemctl restart php-fpm7.2 #重启
-#systemctl start php-fpm7.2 #启动
-#systemctl stop php-fpm7.2 #关闭
-#systemctl status php-fpm7.2 #检查状态
 
 
 
 #redis
-redis-server &
+if [ ! -z "$ENABLE_REDIS" ]; then
+    redis-server &
+fi
 
 
 #mysql
-service mysql start
+if [ ! -z "$ENABLE_MYSQL" ]; then
+    service mysql start
+fi
 
 
 #memcached
-
+if [ ! -z "$ENABLE_MEMCACHED" ]; then
+    echo 'memcache'
+    #TODO memcached
+fi
 
 
 #mongodb
@@ -30,12 +34,10 @@ service mysql start
 #mongod --dbpath /mongodb/data/data  --port 27017 --logpath /mongodb/logs --logappend
 
 
-
 #rabbitmq
 #rabbitmq-server &
 #启动web界面 localhost:15672
 #rabbitmq-plugins enable rabbitmq_management
-
 
 
 
