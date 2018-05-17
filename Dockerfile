@@ -7,7 +7,7 @@ USER root
 
 #TODO ENV 环境变量
 #php扩展文件夹
-ENV PHP_EXT_DIR /etc/php/7.2/cli/conf.d
+ENV PHP_EXT_CONF_DIR /etc/php/7.2/cli/conf.d
 
 
 
@@ -42,9 +42,6 @@ RUN apt-get install -y curl wget
 RUN apt-get install -y nginx
 
 
-#install mysql
-RUN apt-get install -y  -q mysql-server mysql-client
-
 
 #install redis
 RUN apt-get install -y redis-server
@@ -67,6 +64,7 @@ php7.2-mongodb php7.2-redis php7.2-memcached php7.2-dev && \
 pecl install yaf && \
 #xdebug ext
 pecl install xdebug && \
+
 #rabbimq ext
 wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
 tar zxf rabbitmq-c-0.7.1.tar.gz && \
@@ -104,6 +102,13 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
 echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
 apt-get update && \
 apt-get install -y  mongodb-org
+
+
+
+
+#install mysql
+RUN apt-get install -y  -q mysql-server mysql-client
+
 
 
 #install golang
