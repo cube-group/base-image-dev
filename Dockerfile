@@ -6,6 +6,11 @@ MAINTAINER chenqionghe development "chenqionghe@sina.com"
 USER root
 
 #TODO ENV 环境变量
+#php扩展文件夹
+ENV PHP_EXT_DIR /etc/php/7.2/cli/conf.d
+
+
+
 
 
 #修改为国内镜像源
@@ -38,7 +43,7 @@ RUN apt-get install -y nginx
 
 
 #install mysql
-RUN apt-get install -y mysql-server mysql-client
+RUN apt-get install -y  -q mysql-server mysql-client
 
 
 #install redis
