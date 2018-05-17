@@ -30,7 +30,7 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/a
 apt-get update
 
 #install tools
-RUN apt-get install curl wget
+RUN apt-get install -y curl wget
 
 
 #install nginx
