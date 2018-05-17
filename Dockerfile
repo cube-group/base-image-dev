@@ -10,40 +10,6 @@ USER root
 ENV PHP_EXT_CONF_DIR /etc/php/7.2/cli/conf.d
 
 
-#install php-fpm 7.2
-RUN apt-get install -y software-properties-common && \
-add-apt-repository ppa:ondrej/php && \
-apt-get update && \
-apt-get install -y php7.2-fpm && \
-#php ext
-apt-get install -y php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-xml php7.2-opcache php7.2-gd \
-php7.2-mongodb php7.2-redis php7.2-memcached php7.2-dev && \
-#yaf ext
-pecl install yaf && \
-#xdebug ext
-pecl install xdebug && \
-
-#rabbimq ext
-#wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
-#RUN tar zxf rabbitmq-c-0.7.1.tar.gz && \
-#cd rabbitmq-c-0.7.1 && \
-#./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
-#make && make install
-
-#TODO 生成配置,替换配置选项
-
-
-#install composer
-RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
-php composer-setup.php --install-dir=/usr/bin --filename=composer && \
-php -r "unlink('composer-setup.php');"
-
-
-
-
-
 
 #修改为国内镜像源
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
@@ -70,6 +36,40 @@ apt-get update
 RUN apt-get install -y curl \
     wget \
     autoconf
+
+
+#install php-fpm 7.2
+RUN apt-get install -y software-properties-common && \
+add-apt-repository ppa:ondrej/php && \
+apt-get update && \
+apt-get install -y php7.2-fpm && \
+#php ext
+apt-get install -y php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-xml php7.2-opcache php7.2-gd \
+php7.2-mongodb php7.2-redis php7.2-memcached php7.2-dev && \
+#yaf ext
+pecl install yaf && \
+#xdebug ext
+pecl install xdebug && \
+
+#rabbimq ext
+#wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
+#RUN tar zxf rabbitmq-c-0.7.1.tar.gz && \
+#cd rabbitmq-c-0.7.1 && \
+#./configure --prefix=/usr/local/rabbitmq-c-0.7.1 && \
+#make && make install
+
+#TODO 生成配置,替换配置选项
+
+
+#install composer
+#RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
+#php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+#php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+#php composer-setup.php --install-dir=/usr/bin --filename=composer && \
+#php -r "unlink('composer-setup.php');"
+
+
+
 
 
 
