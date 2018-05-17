@@ -138,14 +138,14 @@ apt-get install -y  mongodb-org
 
 #install golang
 RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
-tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz
-RUN echo "export GOOROOT=/usr/local/go" >> /etc/profile
-RUN echo "export PATH=\$PATH:\$GOROOT/bin" >> /etc/profile
+tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
+echo "export GOOROOT=/usr/local/go" >> /etc/profile && \
+echo "export PATH=\$PATH:\$GOROOT/bin" >> /etc/profile
 
 
 
 #install mysql TODO
-#RUN apt-get install -y  -q mysql-server mysql-client
+RUN yes|apt-get install -y -q mysql-server mysql-client
 
 
 #TODO 拷贝配置 启动脚本
