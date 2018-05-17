@@ -35,7 +35,15 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/a
 apt-get update
 
 #install tools
-RUN apt-get install -y curl wget
+RUN apt-get install -y
+    curl \
+    wget
+    curl \
+    python \
+    python-dev \
+    py-pip \
+    autoconf
+
 
 
 #install nginx
@@ -43,16 +51,8 @@ RUN apt-get install -y nginx
 
 
 
-#install redis
-RUN apt-get install -y redis-server
-
-
-#install memcache
-RUN apt-get install -y memcached
-
-
 #install php-fpm 7.2
-RUN apt-get install -y language-pack-en-base local-gen en_US.UTF-8 && \
+RUN apt-get install -y language-pack-en-base && \
 apt-get install software-properties-common && \
 add-apt-repository ppa:ondrej/php && \
 apt-get update && \
@@ -64,6 +64,7 @@ php7.2-mongodb php7.2-redis php7.2-memcached php7.2-dev && \
 pecl install yaf && \
 #xdebug ext
 pecl install xdebug && \
+
 
 #rabbimq ext
 wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz && \
@@ -85,6 +86,19 @@ php -r "unlink('composer-setup.php');"
 
 
 
+
+
+
+
+
+#install redis
+RUN apt-get install -y redis-server
+
+
+#install memcache
+RUN apt-get install -y memcached
+
+
 #install nodeJs
 RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
 tar -xvf node-v8.9.3-linux-x64.tar.xz && \
@@ -104,11 +118,8 @@ apt-get update && \
 apt-get install -y  mongodb-org
 
 
-
-
 #install mysql
 RUN apt-get install -y  -q mysql-server mysql-client
-
 
 
 #install golang
