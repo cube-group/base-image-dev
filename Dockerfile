@@ -69,28 +69,8 @@ php7.2-mongodb php7.2-redis php7.2-memcached php7.2-dev && \
 #yaf ext
 pecl install yaf && \
 #xdebug ext
-pecl install xdebug && \
-#rabbimq-c
-wget -c https://github.com/alanxz/rabbitmq-c/releases/download/v0.8.0/rabbitmq-c-0.8.0.tar.gz && \
-tar zxf rabbitmq-c-0.8.0.tar.gz && \
-cd rabbitmq-c-0.8.0 && \
-./configure --prefix=/usr/local/rabbitmq-c-0.8.0 && \
-make && make install && \
-#amqp
-wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
-tar zxf amqp-1.9.3.tgz && \
-cd amqp-1.9.3 && \
-phpize && \
-./configure --with-php-config=/usr/bin/php-config --with-amqp --with-librabbitmq-dir=/usr/local/rabbitmq-c-0.7.1 && \
-make && make install && \
-echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini && \
-#install composer
-EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
-php composer-setup.php --install-dir=/usr/bin --filename=composer && \
-php -r "unlink('composer-setup.php');" && \
-ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
+pecl install xdebug
+
 #php.ini
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_DIR}/xdebug.ini
 COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_DIR}/opcache.ini
@@ -109,6 +89,31 @@ RUN sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FP
     sed -i "s#;listen.group = www-data#listen.group = nginx#g" ${FPM_CONF} && \
     sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = ${FPM_SOCK_FILE}#g" ${FPM_CONF} && \
     sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF}
+
+
+
+#rabbimq-c
+RUN wget -c https://github.com/alanxz/rabbitmq-c/releases/download/v0.8.0/rabbitmq-c-0.8.0.tar.gz && \
+tar zxf rabbitmq-c-0.8.0.tar.gz && \
+cd rabbitmq-c-0.8.0 && \
+./configure --prefix=/usr/local/rabbitmq-c-0.8.0 && \
+make && make install && \
+#amqp
+wget -c http://pecl.php.net/get/amqp-1.9.3.tgz && \
+tar zxf amqp-1.9.3.tgz && \
+cd amqp-1.9.3 && \
+phpize && \
+./configure --with-php-config=/usr/bin/php-config --with-amqp --with-librabbitmq-dir=/usr/local/rabbitmq-c-0.7.1 && \
+make && make install && \
+echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini
+
+#install composer
+RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+php composer-setup.php --install-dir=/usr/bin --filename=composer && \
+php -r "unlink('composer-setup.php');" && \
+ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
 
 
 
