@@ -58,5 +58,8 @@ fi
 
 #TODO 提供php-fpm mysql memcached mongodb rabbitmq启动管理的脚本
 
+
+#监控脚本，检测目录/devops/create.sql,有就执行导入数据库
+
 #nginx
 /usr/sbin/nginx -g "daemon off; error_log /dev/stderr info;"
