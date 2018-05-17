@@ -137,6 +137,10 @@ apt-get install -y  mongodb-org
 
 
 #install golang
+RUN wget https://storage.googleapis.com/golang/go1.9.src.tar.gz && \
+
+
+
 RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
 tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
 mkdir -p ~/go/src && \
