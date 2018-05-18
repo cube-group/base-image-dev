@@ -165,7 +165,6 @@ RUN apt-get install -y rabbitmq-server
 #copy scripts
 COPY scripts/ /extra
 
-
 EXPOSE 80
 EXPOSE 9000
 EXPOSE 3306

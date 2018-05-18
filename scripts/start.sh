@@ -18,7 +18,7 @@ fi
 #mysql
 if [ ! -z "$ENABLE_MYSQL" ]; then
 service mysql start
-# The file is only populated when and if the root password is set.
+# 设置root密码为root,并给远程连接权限
 PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX)
 install /dev/null -m0600 -omysql -gmysql "$PASSFILE"
 mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --init-command="SET @@SESSION.SQL_LOG_BIN=0;")
