@@ -129,18 +129,18 @@ RUN apt-get install -y memcached
 
 
 #install mysql
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client
-
-#set root root
-RUN sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf
-
-RUN service mysql start
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
+#mysqladmin -u root -password root && \
+RUN sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf && \
+service mysql start && \
 
 RUN PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX) && \
-mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --socket="$SOCKET" --init-command="SET @@SESSION.SQL_LOG_BIN=0;") && \
-mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;" && \
-msyql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;" && \
-mysql "flush privileges;" && \
+mysql=( mysql --defaults-extra-file="\$PASSFILE" --protocol=socket -uroot -hlocalhost --socket="\$SOCKET" --init-command="SET @@SESSION.SQL_LOG_BIN=0;") && \
+mysql <<-EOSQL \
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION; \
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION; \
+flush privileges; \
+EOSQL && \
 service mysql stop
 
 
@@ -177,8 +177,6 @@ RUN apt-get install -y phpunit && \
 phpunit --version && \
 composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
 composer global require phpunit/phpunit
-
-
 #copy scripts
 COPY scripts/ /extra
 
