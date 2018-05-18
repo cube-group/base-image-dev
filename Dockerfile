@@ -138,8 +138,8 @@ RUN service mysql start
 
 RUN PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX) && \
 mysql=( mysql --defaults-extra-file="\$PASSFILE" --protocol=socket -uroot -hlocalhost --socket="\$SOCKET" --init-command="SET @@SESSION.SQL_LOG_BIN=0;") && \
-mysql "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;" && \
-msyql "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;" && \
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;" && \
+msyql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;" && \
 mysql "flush privileges;" && \
 service mysql stop
 
