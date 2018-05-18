@@ -111,12 +111,6 @@ php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
 ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
 
-#install phpunit
-RUN apt-get install -y phpunit && \
-phpunit --version && \
-composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
-composer global require phpunit/phpunit
-
 
 #install nginx
 RUN apt-get install -y nginx
@@ -162,6 +156,14 @@ apt-get install -y mongodb-org
 
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
+
+
+#install phpunit
+RUN apt-get install -y phpunit && \
+phpunit --version && \
+composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
+composer global require phpunit/phpunit
+
 
 
 #copy scripts
