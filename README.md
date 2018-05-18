@@ -24,7 +24,9 @@ registry.eoffcn.com/dev:stable
 
 
 连接容器中的mysql数据库
->IP:127.0.0.1 账号:root 密码:root
+* IP - 127.0.0.1 
+* 账号 - root
+* 密码 - root
 
 
 # 容器映射端口 
