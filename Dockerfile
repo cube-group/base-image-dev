@@ -70,21 +70,6 @@ pecl install xdebug && \
 #amqp ext
 apt-get install -y librabbitmq-dev && \
 pecl install amqp && \
-#install composer
-EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
-php composer-setup.php --install-dir=/usr/bin --filename=composer && \
-php -r "unlink('composer-setup.php');" && \
-ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
-mkdir /run/php && \
-#install phpunit
-wget https://phar.phpunit.de/phpunit-7.0.phar && \
-chmod +x phpunit-7.0.phar && \
-mv phpunit-7.0.phar /usr/local/bin/phpunit && \
-phpunit --version && \ && \
-composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
-composer global require phpunit/phpunit && \
 #php-fpm.conf
 sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FPM_CONF} && \
 sed -i "s#pm.max_children = 5#pm.max_children = ${FPM_MAX_CHILDREN}#g" ${FPM_CONF} && \
@@ -105,11 +90,31 @@ ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_FPM_CONF_DIR}/dev.ini && \
 ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_CLI_CONF_DIR}/yaf.ini && \
 ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_CLI_CONF_DIR}/xdebug.ini && \
 ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_CLI_CONF_DIR}/opcache.ini && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini
+ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini && \
+mkdir /run/php
+
 #php.ini
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
 COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
 COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_LINK_DIR}/yaf.ini
+
+
+#install composer
+RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+php composer-setup.php --install-dir=/usr/bin --filename=composer && \
+php -r "unlink('composer-setup.php');" && \
+ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
+
+#install phpunit
+RUN wget https://phar.phpunit.de/phpunit-7.0.phar && \
+chmod +x phpunit-7.0.phar && \
+mv phpunit-7.0.phar /usr/local/bin/phpunit && \
+phpunit --version && \ && \
+composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
+composer global require phpunit/phpunit && \
+
 
 
 #install nginx
