@@ -82,7 +82,7 @@ sed -i "s#;listen.mode = 0660#listen.mode = 0666#g" ${FPM_CONF} && \
 sed -i "s#;listen.owner = www-data#listen.owner = nginx#g" ${FPM_CONF} && \
 sed -i "s#;listen.group = www-data#listen.group = nginx#g" ${FPM_CONF} && \
 sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = ${FPM_SOCK_FILE}#g" ${FPM_CONF} && \
-sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF}
+sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF} && \
 mkdir /run/php
 
 #php.ini
