@@ -17,14 +17,16 @@ fi
 
 #mysql
 if [ ! -z "$ENABLE_MYSQL" ]; then
+service mysql start
+# The file is only populated when and if the root password is set.
 PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX)
-mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --socket="$SOCKET" --init-command="SET @@SESSION.SQL_LOG_BIN=0;")
-mysql <<-EOSQL
+install /dev/null -m0600 -omysql -gmysql "$PASSFILE"
+mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --init-command="SET @@SESSION.SQL_LOG_BIN=0;")
+"${mysql[@]}" <<-EOSQL
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
 flush privileges;
 EOSQL
-    service mysql start
 fi
 
 
