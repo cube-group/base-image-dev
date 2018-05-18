@@ -111,6 +111,12 @@ php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
 ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
 
+#install phpunit
+RUN apt-get install -y phpunit && \
+phpunit --version && \
+composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
+composer global require phpunit/phpunit
+
 
 #install nginx
 RUN apt-get install -y nginx
@@ -126,23 +132,6 @@ RUN apt-get install -y redis-server
 
 #install memcached
 RUN apt-get install -y memcached
-
-
-#install mysql
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client
-#mysqladmin -u root -password root && \
-RUN sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf && \
-service mysql start && \
-
-RUN PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX) && \
-mysql=( mysql --defaults-extra-file="\$PASSFILE" --protocol=socket -uroot -hlocalhost --socket="\$SOCKET" --init-command="SET @@SESSION.SQL_LOG_BIN=0;") && \
-mysql <<-EOSQL \
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION; \
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION; \
-flush privileges; \
-EOSQL
-RUN service mysql stop
-
 
 #install nodeJs
 RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
@@ -161,6 +150,21 @@ echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
 rm -f go1.9.linux-amd64.tar.gz
 
 
+#install mysql
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
+#mysqladmin -u root -password root && \
+sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf && \
+service mysql start && \
+PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX) && \
+mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --socket="$SOCKET" --init-command="SET @@SESSION.SQL_LOG_BIN=0;") && \
+mysql <<-EOSQL \
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION; \
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION; \
+flush privileges; \
+EOSQL && \
+service mysql stop
+
+
 #install mongodb
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
 echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
@@ -172,11 +176,6 @@ apt-get install -y mongodb-org
 RUN apt-get install -y rabbitmq-server
 
 
-#install phpunit
-RUN apt-get install -y phpunit && \
-phpunit --version && \
-composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
-composer global require phpunit/phpunit
 #copy scripts
 COPY scripts/ /extra
 
