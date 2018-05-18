@@ -29,9 +29,6 @@ ENV APP_PATH /var/www/html
 ENV APP_PATH_INDEX /var/www/html
 ENV APP_PATH_404 /var/www/html
 
-#MSYQL环境变量
-ENV MYSQL_PASSWORD root
-
 
 #修改为国内镜像源
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
@@ -55,7 +52,7 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/a
 apt-get update && \
 #install tools
 apt-get install -y gcc autoconf curl git wget vim libxml2 libxml2-dev libssl-dev bzip2 libbz2-dev libjpeg-dev libpng12-dev \
-libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev
+libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev apache2-utils
 
 
 #install php-fpm 7.2
@@ -73,7 +70,6 @@ pecl install xdebug && \
 #amqp ext
 apt-get install -y librabbitmq-dev && \
 pecl install amqp && \
-echo 'extension=amqp.so' >> ${PHP_EXT_CONF_DIR}/amqp.ini && \
 #install composer
 EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
@@ -82,6 +78,13 @@ php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
 ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
 mkdir /run/php && \
+#install phpunit
+wget https://phar.phpunit.de/phpunit-7.0.phar && \
+chmod +x phpunit-7.0.phar && \
+mv phpunit-7.0.phar /usr/local/bin/phpunit && \
+phpunit --version && \ && \
+composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
+composer global require phpunit/phpunit && \
 #php-fpm.conf
 sed -i "s#;catch_workers_output\s*=\s*yes#catch_workers_output = yes#g" ${FPM_CONF} && \
 sed -i "s#pm.max_children = 5#pm.max_children = ${FPM_MAX_CHILDREN}#g" ${FPM_CONF} && \
@@ -109,7 +112,6 @@ COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
 COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_LINK_DIR}/yaf.ini
 
 
-
 #install nginx
 RUN apt-get install -y nginx
 #nginx conf
@@ -119,25 +121,15 @@ COPY nginx/404.html ${APP_PATH}
 COPY nginx/index.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
 
-
 #install redis
 RUN apt-get install -y redis-server
 
 #install memcached
 RUN apt-get install -y memcached
 
-#install rabbimq
-RUN apt-get install -y rabbitmq-server
 
 #install mysql
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client
-
-#install mongodb
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
-apt-get update && \
-apt-get install -y mongodb-org
 
 #install nodeJs
 RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
@@ -148,15 +140,31 @@ ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm && \
 rm -f node-v8.9.3-linux-x64.tar.xz
 
 
-#install golang
-RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
-tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
-echo "export GOOROOT=/usr/local/go" >> ./root/.bashrc && \
-echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
-source ./root/.bashrc && \
-go version && \
-rm -f go1.9.linux-amd64.tar.gz
 
+
+
+############################################# todo 提高速度，先不安装 #############################################
+
+##install golang TODO
+#RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
+#tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
+#echo "export GOOROOT=/usr/local/go" >> ./root/.bashrc && \
+#echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
+#source ./root/.bashrc && \
+#go version && \
+#rm -f go1.9.linux-amd64.tar.gz
+#
+#
+#
+##install mongodb
+#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
+#echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
+#apt-get update && \
+#apt-get install -y mongodb-org
+#
+#
+##install rabbimq
+#RUN apt-get install -y rabbitmq-server
 
 
 
