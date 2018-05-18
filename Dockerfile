@@ -127,6 +127,11 @@ COPY nginx/404.html ${APP_PATH}
 COPY nginx/index.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
 
+#install mysql
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
+sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf
+
+
 #install redis
 RUN apt-get install -y redis-server
 
@@ -141,20 +146,12 @@ ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
 ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm && \
 rm -f node-v8.9.3-linux-x64.tar.xz
 
-
 #install golang
 RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
 tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
 echo "export GOOROOT=/usr/local/go" >> ./root/.bashrc && \
 echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
 rm -f go1.9.linux-amd64.tar.gz
-
-
-#install mysql
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
-sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf
-
-
 
 #install mongodb
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
