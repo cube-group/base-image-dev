@@ -18,7 +18,7 @@ docker run -d \
 --name dev \
 -p 8888:80 \
 -p 3307:3306 \
-registry.eoffcn.com/dev:latest
+registry.eoffcn.com/dev:stable
 ```
 访问http://localhost:8888即可访问
 
