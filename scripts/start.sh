@@ -4,7 +4,6 @@ source /etc/profile
 
 
 #php-fpm
-#TODO 根据环境变量初始化php-fpm, sed设置内存，上传大小
 if [ ! -z "$ENABLE_PHP_FPM" ]; then
     /usr/sbin/php-fpm7.2
 fi
@@ -17,29 +16,31 @@ fi
 
 
 #mysql
-#TODO my.cnf定制，密码初始化
 if [ ! -z "$ENABLE_MYSQL" ]; then
     service mysql start
 fi
 
 
 #memcached
-#TODO 根据环境变量，启动memcached
 if [ ! -z "$ENABLE_MEMCACHED" ]; then
     memcached  -d -m 1024 -u root -l 127.0.0.1 -p 11211 -c 1024 -P /tmp/memcached.pid
-    #TODO memcached
 fi
 
 
 #mongodb
-#TODO 初始化密码，根据环境变量memcached
+if [ ! -z "$ENABLE_MONGODB" ]; then
+    mongod --fork --dbpath data --logpath log --logappend
+fi
 
-#service mongod start
-#service mongodb stop
-#mongod --dbpath /mongodb/data/data  --port 27017 --logpath /mongodb/logs --logappend
 
 
 #rabbitmq
+if [ ! -z "$ENABLE_RABBITMQ" ]; then
+    rabb
+fi
+
+
+
 #rabbitmq-server &
 #启动web界面 localhost:15672
 #rabbitmq-plugins enable rabbitmq_management

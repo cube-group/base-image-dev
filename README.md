@@ -235,20 +235,28 @@ go version go1.9 linux/amd64
 
 --- 
 
-# mongodb TODO
-
+# mongodb
+默认启动命令
+```
+mongod --fork --dbpath data --logpath log --logappend
+```
 
 --- 
 
 
 # rabbitmq
-启动
+默认启动命令
 ```
 rabbitmq-server &
 ```
 
 
 
+# 其他实用工具
+* composer
+* phpunit
+* ab
+* git
 
 
 
@@ -257,23 +265,7 @@ rabbitmq-server &
 
 
 # ENV 环境变量
-## PHP参数相关
-* PHP_MEM_LIMIT: php进程内存限制,默认512M
-* PHP_POST_MAX_SIZE: php post最大字节 默认100M
-* PHP_UPLOAD_MAX_FILESIZE: php最大文件上传限制 默认100M
-* FPM_MAX_CHILDREN: php-fpm最大子进程数量
-* FPM_SLOWLOG_TIMEOUT: php-fpm慢日志超时时间(单位:秒)
-
-## NGINX相关
-* APP_PATH: 项目所在目录(默认为:/var/www/html)
-* APP_PATH_INDEX: PHP项目index.php入口文件所在目录(默认为:/var/www/html)
-* APP_PATH_404: PHP项目404.html文件所在目录(默认为:/var/www/html)
 
 
 
 
-
-# 其他实用工具
-* composer
-* phpunit
-* ab
