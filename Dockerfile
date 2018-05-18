@@ -105,7 +105,7 @@ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
 php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
 php composer-setup.php --install-dir=/usr/bin --filename=composer && \
 php -r "unlink('composer-setup.php');" && \
-ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
+ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
 
 #install phpunit
 RUN wget https://phar.phpunit.de/phpunit-7.0.phar && \
@@ -113,7 +113,7 @@ chmod +x phpunit-7.0.phar && \
 mv phpunit-7.0.phar /usr/local/bin/phpunit && \
 phpunit --version && \ && \
 composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
-composer global require phpunit/phpunit && \
+composer global require phpunit/phpunit
 
 
 
