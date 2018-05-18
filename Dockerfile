@@ -140,18 +140,8 @@ ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
 ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm && \
 rm -f node-v8.9.3-linux-x64.tar.xz
 
-#install golang
-RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
-tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
-echo "export GOOROOT=/usr/local/go" >> ./root/.bashrc && \
-echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
-rm -f go1.9.linux-amd64.tar.gz
-
-
-
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
-
 
 #install mongodb
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
@@ -165,6 +155,14 @@ RUN apt-get install -y phpunit && \
 phpunit --version && \
 composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
 composer global require phpunit/phpunit
+
+
+#install golang
+RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
+tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
+echo "export GOOROOT=/usr/local/go" >> ./root/.bashrc && \
+echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
+rm -f go1.9.linux-amd64.tar.gz
 
 
 
