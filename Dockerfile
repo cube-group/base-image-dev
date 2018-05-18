@@ -108,7 +108,7 @@ php -r "unlink('composer-setup.php');" && \
 ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
 
 #install phpunit
-RUN wget https://phar.phpunit.de/phpunit-7.0.phar && \
+RUN wget -c https://phar.phpunit.de/phpunit-7.0.phar && \
 chmod +x phpunit-7.0.phar && \
 mv phpunit-7.0.phar /usr/local/bin/phpunit && \
 phpunit --version && \ && \

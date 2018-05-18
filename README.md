@@ -1,4 +1,5 @@
 # 开发基础镜像
+包含
 * nginx
 * php(包含composer phpunit)
 * mysql
@@ -8,15 +9,20 @@
 * mongodb
 * go
 
+
+
+
 #快速使用
 ```
 docker run --rm --name dev -d -p 8888:80 registry.eoffcn.com/dev
 ```
-访问地址 http://localhost:8888
+访问http://localhost:8888
 
 
 
-# PHP version
+
+# PHP
+### 版本
 ```
 PHP 7.2.4 (cli) (built: Apr  5 2018 01:36:21) ( NTS )
 Copyright (c) 1997-2018 The PHP Group
@@ -24,11 +30,11 @@ Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
     with Zend OPcache v7.2.4, Copyright (c) 1999-2018, by Zend Technologies
     with Xdebug v2.6.0, Copyright (c) 2002-2018, by Derick Rethans
 ```
-# PHP extensions
+### 支持扩展
 ```
 [PHP Modules]
 amqp
-apcu
+calendar
 Core
 ctype
 curl
@@ -39,36 +45,40 @@ fileinfo
 filter
 ftp
 gd
+gettext
 hash
 iconv
 igbinary
-intl
 json
 libxml
 mbstring
 memcached
 mongodb
 msgpack
+mysqli
 mysqlnd
 openssl
+pcntl
 pcre
 PDO
 pdo_mysql
-pdo_pgsql
-pdo_sqlite
 Phar
 posix
 readline
 redis
 Reflection
 session
+shmop
 SimpleXML
-soap
+sockets
 sodium
 SPL
-sqlite3
 standard
+sysvmsg
+sysvsem
+sysvshm
 tokenizer
+wddx
 xdebug
 xml
 xmlreader
@@ -76,13 +86,41 @@ xmlwriter
 xsl
 yaf
 Zend OPcache
-zip
 zlib
 
 [Zend Modules]
 Xdebug
 Zend OPcache
 ```
+### 配置文件路径
+cli模式
+```
+/etc/php/7.2/cli/conf.d
+```
+fpm模式
+```
+/etc/php/7.2/fpm/conf.d
+```
+
+### php-fpm管理
+启动
+```
+php-fpm
+```
+重启
+```
+kill -USR2 `cat /run/php/php7.2-fpm.pid`
+```
+停止
+```
+kill -INT `cat /run/php/php7.2-fpm.pid`
+```
+
+
+
+
+
+
 # Nginx
 ```
 /var/www/html # nginx -V
