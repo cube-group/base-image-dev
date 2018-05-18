@@ -82,21 +82,21 @@ sed -i "s#;listen.mode = 0660#listen.mode = 0666#g" ${FPM_CONF} && \
 sed -i "s#;listen.owner = www-data#listen.owner = nginx#g" ${FPM_CONF} && \
 sed -i "s#;listen.group = www-data#listen.group = nginx#g" ${FPM_CONF} && \
 sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = ${FPM_SOCK_FILE}#g" ${FPM_CONF} && \
-sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF} && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_FPM_CONF_DIR}/opcache.ini && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_FPM_CONF_DIR}/yaf.ini && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_FPM_CONF_DIR}/dev.ini && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_CLI_CONF_DIR}/yaf.ini && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_CLI_CONF_DIR}/xdebug.ini && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_CLI_CONF_DIR}/opcache.ini && \
-ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini && \
+sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF}
 mkdir /run/php
 
 #php.ini
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
 COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
 COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_LINK_DIR}/yaf.ini
+RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_FPM_CONF_DIR}/opcache.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_FPM_CONF_DIR}/yaf.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_FPM_CONF_DIR}/dev.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_CLI_CONF_DIR}/yaf.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_CLI_CONF_DIR}/xdebug.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_CLI_CONF_DIR}/opcache.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini
 
 
 #install composer
