@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-source /etc/profile
-
-
 #php-fpm
 if [ ! -z "$ENABLE_PHP_FPM" ]; then
     /usr/sbin/php-fpm7.2
@@ -17,7 +14,9 @@ fi
 
 #mysql
 if [ ! -z "$ENABLE_MYSQL" ]; then
+
 service mysql start
+
 # 设置root密码为root,并给远程连接权限
 PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX)
 install /dev/null -m0600 -omysql -gmysql "$PASSFILE"
@@ -27,6 +26,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRAN
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
 flush privileges;
 EOSQL
+
 fi
 
 

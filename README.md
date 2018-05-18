@@ -22,7 +22,8 @@ registry.eoffcn.com/dev:latest
 ```
 访问http://localhost:8888即可访问
 
-使用工具连接容器中的mysql数据库
+
+连接容器中的mysql数据库
 >IP:127.0.0.1 账号:root 密码:root
 
 
@@ -37,7 +38,7 @@ Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
     with Zend OPcache v7.2.5-1+ubuntu16.04.1+deb.sury.org+1, Copyright (c) 1999-2018, by Zend Technologies
     with Xdebug v2.6.0, Copyright (c) 2002-2018, by Derick Rethans
 ```
-### 支持扩展
+### 扩展
 ```
 [PHP Modules]
 amqp
@@ -123,6 +124,14 @@ kill -USR2 `cat /run/php/php7.2-fpm.pid`
 kill -INT `cat /run/php/php7.2-fpm.pid`
 ```
 
+### php-fpm管理
+|方式|命令|
+|---|---|
+|启动|```php-fpm```|
+|停止|```kill -INT `cat /run/php/php7.2-fpm.pid` ```|
+|重启|```kill -USR2 `cat /run/php/php7.2-fpm.pid` ```|
+
+
 ---
 
 
@@ -162,28 +171,26 @@ mysql> select version();
 1 row in set (0.00 sec)
 ```
 ### 账号密码
-账号：root
-密码：root
+|账号|密码|
+|---|---|
+|root|root|
 
+### 连接示例
+```
+mysql -uroot -proot
+```
 ### 配置路径
 ```
 /etc/mysql/conf.d
 /etc/mysql/mysql.conf.d/
 ```
-
 ### mysqld管理
-启动
-```
-service mysql start
-```
-重启
-```
-servince mysql restart
-```
-停止
-```
-servince mysql stop
-```
+|方式|命令|
+|---|---|
+|启动|```service mysql start```|
+|停止|```servince mysql restart```|
+|重启|```servince mysql stop```|
+
 
 ---
 
