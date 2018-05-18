@@ -24,7 +24,7 @@ if [ ! -z "$ENABLE_MYSQL" ]; then
         GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;
         GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
         flush privileges;
-    EOSQL
+EOSQL
 
 fi
 
