@@ -127,10 +127,10 @@ COPY nginx/404.html ${APP_PATH}
 COPY nginx/index.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
 
+
 #install mysql
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
 sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf
-
 
 #install redis
 RUN apt-get install -y redis-server
@@ -159,10 +159,8 @@ echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb
 apt-get update && \
 apt-get install -y mongodb-org
 
-
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
-
 
 #copy scripts
 COPY scripts/ /extra
