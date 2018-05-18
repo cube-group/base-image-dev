@@ -152,17 +152,8 @@ rm -f go1.9.linux-amd64.tar.gz
 
 #install mysql
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
-#mysqladmin -u root -password root && \
-sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf && \
-service mysql start && \
-PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX) && \
-mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --socket="$SOCKET" --init-command="SET @@SESSION.SQL_LOG_BIN=0;") && \
-mysql <<-EOSQL \
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION; \
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION; \
-flush privileges; \
-EOSQL && \
-service mysql stop
+sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf
+
 
 
 #install mongodb
