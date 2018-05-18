@@ -21,12 +21,10 @@ docker run -d \
 -p 3307:3306 \
 registry.eoffcn.com/dev:latest
 ```
-访问http://localhost:8888即可定位到index.php
+访问http://localhost:8888即可访问
 
 使用工具连接容器中的mysql数据库
->host 127.0.0.1
-username root
-password root
+>IP:127.0.0.1 账号:root 密码root
 
 
 
