@@ -92,10 +92,12 @@ COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_LINK_DIR}/yaf.ini
 RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && \
     ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_FPM_CONF_DIR}/opcache.ini && \
     ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_FPM_CONF_DIR}/yaf.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/amqp.ini ${PHP_FPM_CONF_DIR}/amqp.ini && \
     ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_FPM_CONF_DIR}/dev.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_CLI_CONF_DIR}/yaf.ini && \
     ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_CLI_CONF_DIR}/xdebug.ini && \
     ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_CLI_CONF_DIR}/opcache.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_CLI_CONF_DIR}/yaf.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/amqp.ini ${PHP_CLI_CONF_DIR}/amqp.ini && \
     ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini
 
 

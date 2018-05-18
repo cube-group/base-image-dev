@@ -26,7 +26,7 @@ fi
 #memcached
 #TODO 根据环境变量，启动memcached
 if [ ! -z "$ENABLE_MEMCACHED" ]; then
-    echo 'memcache'
+    memcached  -d -m 1024 -u root -l 127.0.0.1 -p 11211 -c 1024 -P /tmp/memcached.pid
     #TODO memcached
 fi
 
