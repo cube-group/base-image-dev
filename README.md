@@ -1,5 +1,5 @@
 # 开发基础镜像
-基于ubunbu 16.04版本，主要包含以下软件
+基于ubunbu 16.04版本，集成本地开发环常用软件
 * php
 * nginx
 * mysql
@@ -12,7 +12,7 @@
 
 
 
-#快速使用
+#快速使用DEMO
 ```
 docker run -d \
 --name dev \
@@ -25,6 +25,20 @@ registry.eoffcn.com/dev:stable
 
 连接容器中的mysql数据库
 >IP:127.0.0.1 账号:root 密码:root
+
+
+# 容器映射端口 
+如需在外部使用容器软件，需要用-p参数映射相应端口，如DEMO中宿主机用3307映射3306端口
+
+|环境变量|值说明|
+|---|---|
+| ENABLE_PHP_FPM | 启用fpm，1:启用 0:禁用(默认1) |
+| ENABLE_MYSQL | 启用fpm，1:启用 0:禁用(默认1) |
+| ENABLE_MEMCACHED | 启用memcached，1:启用 0:禁用(默认1) |
+| ENABLE_REDIS 1 | 启用redis，1:启用 0:禁用(默认1) |
+| ENABLE_RABBITMQ 1 | 启用rabbitmq，1:启用 0:禁用(默认0) |
+| ENABLE_MONGODB 1 | 启用mongodb，1:启用 0:禁用(默认0) |
+
 
 
 
@@ -100,32 +114,14 @@ zlib
 Xdebug
 Zend OPcache
 ```
-### 配置文件路径
-cli模式
-```
-/etc/php/7.2/cli/conf.d
-```
-fpm模式
-```
-/etc/php/7.2/fpm/conf.d
-```
+### 配置文件
+|模式|配置路径|
+|---|---|
+|cli|/etc/php/7.2/cli/conf.d|
+|fpm|/etc/php/7.2/fpm/conf.d|
 
-### php-fpm管理
-启动
-```
-php-fpm
-```
-重启
-```
-kill -USR2 `cat /run/php/php7.2-fpm.pid`
-```
-停止
-```
-kill -INT `cat /run/php/php7.2-fpm.pid`
-```
-
-### php-fpm管理
-|方式|命令|
+### php-fpm进程管理
+|类型|命令|
 |---|---|
 |启动|```php-fpm```|
 |停止|```kill -INT `cat /run/php/php7.2-fpm.pid` ```|
@@ -155,6 +151,13 @@ configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-p
 ```
 /etc/nginx/sites-enabled
 ```
+### nginx管理
+|类型|指令|
+|---|---|
+|启动|nginx|
+|停止|nginx -s stop|
+|重新载入配置|nginx -s reload|
+|检测配置是否正确|nginx -t|
 
 ---
 
@@ -184,8 +187,8 @@ mysql -uroot -proot
 /etc/mysql/conf.d
 /etc/mysql/mysql.conf.d/
 ```
-### mysqld管理
-|方式|命令|
+### mysql进程管理
+|类型|命令|
 |---|---|
 |启动|```service mysql start```|
 |停止|```servince mysql restart```|
@@ -229,6 +232,7 @@ kill /tmp/memcached.pid
 ---
 
 # nodejs
+### 版本
 ```
 root@468696e569db:/etc/redis# node -v
 v8.9.3
@@ -278,32 +282,13 @@ rabbitmq-server &
 ```
 
 
-# 其他实用工具
+# 其他软件
+* git
 * composer
 * phpunit
+* curl
+* wget
 * ab
-* git
-
-
-
-# 容器端口映射 
-* nginx - 80
-* php - 9000
-* mysql - 3306
-* redis - 6379
-* memcached - 11211
-* rabbitmq - 4369 5672 5671 15672 61613 61614 1883 8883
-
-
-
-
-# 环境变量
-* ENABLE_PHP_FPM - 启用fpm，1:启用 0:禁用(默认1)
-* ENABLE_MYSQL - 启用fpm，1:启用 0:禁用(默认1)
-* ENABLE_MEMCACHED - 启用memcached，1:启用 0:禁用(默认1)
-* ENABLE_REDIS 1 - 启用redis，1:启用 0:禁用(默认1)
-* ENABLE_RABBITMQ 1 - 启用rabbitmq，1:启用 0:禁用(默认0)
-* ENABLE_MONGODB 1 - 启用mongodb，1:启用 0:禁用(默认0)
 
 
 
