@@ -28,8 +28,6 @@ registry.eoffcn.com/dev:latest
 
 
 
-
-
 # PHP
 ### 版本
 ```
@@ -235,6 +233,7 @@ root@468696e569db:/etc/redis# npm -v
 --- 
 
 # go
+### 版本
 ```
 root@468696e569db:/etc/redis# go version
 go version go1.9 linux/amd64
@@ -244,6 +243,19 @@ go version go1.9 linux/amd64
 --- 
 
 # mongodb
+### 版本
+```
+root@9dbe17da8ae2:/# mongo -version
+MongoDB shell version v3.4.15
+git version: 52e5b5fbaa3a2a5b1a217f5e647b5061817475f9
+OpenSSL version: OpenSSL 1.0.2g  1 Mar 2016
+allocator: tcmalloc
+modules: none
+build environment:
+    distmod: ubuntu1604
+    distarch: x86_64
+    target_arch: x86_64
+```
 默认启动命令
 ```
 mongod --fork --dbpath data --logpath log --logappend
@@ -285,7 +297,6 @@ rabbitmq-server &
 * ENABLE_REDIS 1 - 启用redis，1:启用 0:禁用(默认1)
 * ENABLE_RABBITMQ 1 - 启用rabbitmq，1:启用 0:禁用(默认0)
 * ENABLE_MONGODB 1 - 启用mongodb，1:启用 0:禁用(默认0)
-使用方式
 
 
 
