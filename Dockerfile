@@ -148,7 +148,6 @@ rm -f node-v8.9.3-linux-x64.tar.xz
 
 
 
-############################################# todo 提高速度，先不安装 #############################################
 
 #install golang
 RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
