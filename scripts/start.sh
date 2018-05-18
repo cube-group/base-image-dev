@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #php-fpm
 if [ ! -z "$ENABLE_PHP_FPM" ]; then
@@ -20,9 +20,11 @@ if [ ! -z "$ENABLE_MYSQL" ]; then
     PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX)
     install /dev/null -m0600 -omysql -gmysql "$PASSFILE"
     mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --init-command="SET @@SESSION.SQL_LOG_BIN=0;")
-    "${mysql[@]}" "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION";
-    "${mysql[@]}" "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION";
-    "${mysql[@]}" "flush privileges";
+    "${mysql[@]}" <<-EOSQL
+        GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;
+        GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
+        flush privileges;
+    EOSQL
 fi
 
 

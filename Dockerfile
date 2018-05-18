@@ -175,7 +175,7 @@ EXPOSE 4369 5672 5671 15672 61613 61614 1883 8883
 
 STOPSIGNAL SIGTERM
 
-CMD ["sh","/extra/start.sh"]
+CMD ["bash","/extra/start.sh"]
 
 
 
