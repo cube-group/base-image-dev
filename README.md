@@ -159,6 +159,10 @@ mysql> select version();
 +-------------------------+
 1 row in set (0.00 sec)
 ```
+### 账号密码
+账号：root
+密码：root
+
 ### 配置路径
 ```
 /etc/mysql/conf.d
@@ -259,16 +263,25 @@ rabbitmq-server &
 
 
 
+# 容器端口映射 
+* nginx - 80
+* php - 9000
+* mysql - 3306
+* redis - 6379
+* memcached - 11211
+* rabbitmq - 4369 5672 5671 15672 61613 61614 1883 8883
 
 
 
-# ENV 环境变量
+
+# 环境变量
 * ENABLE_PHP_FPM - 启用fpm，1:启用 0:禁用(默认1)
 * ENABLE_MYSQL - 启用fpm，1:启用 0:禁用(默认1)
 * ENABLE_MEMCACHED - 启用memcached，1:启用 0:禁用(默认1)
 * ENABLE_REDIS 1 - 启用redis，1:启用 0:禁用(默认1)
-* ENABLE_RABBITMQ 1 - 启用rabbitmq，1:启用 0:禁用(默认1)
-* ENABLE_MONGODB 1 - 启用mongodb，1:启用 0:禁用(默认1)
+* ENABLE_RABBITMQ 1 - 启用rabbitmq，1:启用 0:禁用(默认0)
+* ENABLE_MONGODB 1 - 启用mongodb，1:启用 0:禁用(默认0)
+使用方式
 
 
 

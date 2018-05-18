@@ -9,8 +9,8 @@ ENV ENABLE_PHP_FPM 1
 ENV ENABLE_MYSQL 1
 ENV ENABLE_MEMCACHED 1
 ENV ENABLE_REDIS 1
-ENV ENABLE_RABBITMQ 1
-ENV ENABLE_MONGODB 1
+ENV ENABLE_RABBITMQ 0
+ENV ENABLE_MONGODB 0
 
 #php环境变量
 ENV PHP_CLI_CONF_DIR /etc/php/7.2/cli/conf.d
@@ -86,6 +86,7 @@ sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF}
 mkdir /run/php
 
 #php.ini
+COPY ./php-fpm/amqp.ini ${PHP_EXT_CONF_LINK_DIR}/amqp.ini
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
 COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
 COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_LINK_DIR}/yaf.ini
@@ -134,7 +135,19 @@ RUN apt-get install -y memcached
 
 
 #install mysql
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
+#mysqladmin -u root -password root && \
+sed -i "s#bind-address\s*=\s*127.0.0.1#bind-address	= 0.0.0.0#g" /etc/mysql/mysql.conf.d/mysqld.cnf && \
+service mysql start && \
+PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX) && \
+mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --socket="$SOCKET" --init-command="SET @@SESSION.SQL_LOG_BIN=0;") && \
+mysql <<-EOSQL
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
+flush privileges;
+EOSQL && \
+service mysql stop
+
 
 #install nodeJs
 RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
