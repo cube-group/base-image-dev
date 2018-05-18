@@ -15,17 +15,16 @@ fi
 #mysql
 if [ ! -z "$ENABLE_MYSQL" ]; then
 
-service mysql start
-
-# 设置root密码为root,并给远程连接权限
-PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX)
-install /dev/null -m0600 -omysql -gmysql "$PASSFILE"
-mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --init-command="SET @@SESSION.SQL_LOG_BIN=0;")
-"${mysql[@]}" <<-EOSQL
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
-flush privileges;
-EOSQL
+    service mysql start
+    # 设置root密码为root,并给远程连接权限
+    PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX)
+    install /dev/null -m0600 -omysql -gmysql "$PASSFILE"
+    mysql=( mysql --defaults-extra-file="$PASSFILE" --protocol=socket -uroot -hlocalhost --init-command="SET @@SESSION.SQL_LOG_BIN=0;")
+    "${mysql[@]}" <<-EOSQL
+        GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;
+        GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
+        flush privileges;
+    EOSQL
 
 fi
 
