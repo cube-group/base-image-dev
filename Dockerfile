@@ -13,7 +13,8 @@ ENV ENABLE_RABBITMQ 1
 ENV ENABLE_MONGODB 1
 
 #php环境变量
-ENV PHP_EXT_CONF_DIR /etc/php/7.2/cli/conf.d
+ENV PHP_CLI_CONF_DIR /etc/php/7.2/cli/conf.d
+ENV PHP_FPM_CONF_DIR /etc/php/7.2/fpm/conf.d
 ENV PHP_EXT_CONF_LINK_DIR /etc/php/7.2/mods-available
 ENV PHP_CONF /etc/php/7.2/fpm/php-fpm.conf
 ENV FPM_CONF /etc/php/7.2/fpm/pool.d/www.conf
@@ -54,9 +55,11 @@ echo "deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse" >>/etc/a
 apt-get update && \
 #install tools
 apt-get install -y gcc autoconf curl git wget vim libxml2 libxml2-dev libssl-dev bzip2 libbz2-dev libjpeg-dev libpng12-dev \
-libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev && \
+libfreetype6-dev libgmp-dev libmcrypt-dev libreadline6-dev libsnmp-dev libxslt1-dev libcurl4-openssl-dev
+
+
 #install php-fpm 7.2
-apt-get install -y software-properties-common && \
+RUN apt-get install -y software-properties-common && \
 LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
 apt-get update && \
 apt-get install -y php7.2-fpm && \
@@ -92,48 +95,70 @@ sed -i "s#;listen.owner = www-data#listen.owner = nginx#g" ${FPM_CONF} && \
 sed -i "s#;listen.group = www-data#listen.group = nginx#g" ${FPM_CONF} && \
 sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = ${FPM_SOCK_FILE}#g" ${FPM_CONF} && \
 sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF} && \
-#install nginx
-apt-get install -y nginx && \
-#install redis
-apt-get install -y redis-server && \
-#install memcached
-apt-get install -y memcached && \
-#install rabbimq
-apt-get install -y rabbitmq-server && \
-#install mysql
-DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
-#install mongodb
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
-apt-get update && \
-apt-get install -y mongodb-org && \
-#install nodeJs
-wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
-tar -xvf node-v8.9.3-linux-x64.tar.xz && \
-mv node-v8.9.3-linux-x64 /usr/local && \
-ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
-ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm && \
-rm -f node-v8.9.3-linux-x64.tar.xz && \
-#install golang
-curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
-tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
-echo "export GOOROOT=/usr/local/go" >> /etc/profile && \
-echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile && \
-rm -f go1.9.linux-amd64.tar.gz
-
-
+ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && \
+ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_FPM_CONF_DIR}/opcache.ini && \
+ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_FPM_CONF_DIR}/yaf.ini && \
+ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_FPM_CONF_DIR}/dev.ini && \
+ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_CLI_CONF_DIR}/yaf.ini && \
+ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_CLI_CONF_DIR}/xdebug.ini && \
+ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_CLI_CONF_DIR}/opcache.ini && \
+ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini
 #php.ini
-COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_DIR}/xdebug.ini
-COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_DIR}/opcache.ini
-COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_DIR}/yaf.ini
-COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_DIR}/dev.ini
+COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
+COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
+COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_LINK_DIR}/yaf.ini
 
+
+
+#install nginx
+RUN apt-get install -y nginx
 #nginx conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/sites-enabled/default
 COPY nginx/404.html ${APP_PATH}
 COPY nginx/index.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
+
+
+#install redis
+RUN apt-get install -y redis-server
+
+#install memcached
+RUN apt-get install -y memcached
+
+#install rabbimq
+RUN apt-get install -y rabbitmq-server
+
+#install mysql
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client
+
+#install mongodb
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
+echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
+apt-get update && \
+apt-get install -y mongodb-org
+
+#install nodeJs
+RUN wget https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
+tar -xvf node-v8.9.3-linux-x64.tar.xz && \
+mv node-v8.9.3-linux-x64 /usr/local && \
+ln -s /usr/local/node-v8.9.3-linux-x64/bin/node /usr/local/bin/node && \
+ln -s /usr/local/node-v8.9.3-linux-x64/bin/npm /usr/local/bin/npm && \
+rm -f node-v8.9.3-linux-x64.tar.xz
+
+
+#install golang
+RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
+tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
+echo "export GOOROOT=/usr/local/go" >> ./root/.bashrc && \
+echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
+source ./root/.bashrc && \
+go version && \
+rm -f go1.9.linux-amd64.tar.gz
+
+
+
 
 #copy scripts
 COPY scripts/ /extra
