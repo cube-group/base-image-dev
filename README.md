@@ -20,7 +20,7 @@ docker run -d \
 -p 3307:3306 \
 registry.eoffcn.com/dev:stable
 ```
-访问http://localhost:8888即可访问
+访问http://localhost:8888 即可访问
 
 
 连接容器中的mysql数据库
