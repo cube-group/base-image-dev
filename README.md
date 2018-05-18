@@ -1,5 +1,5 @@
 # 开发基础镜像
-包含
+基于ubunbu 16.04版本，主要包含以下软件
 * php
 * nginx
 * mysql
@@ -9,7 +9,6 @@
 * go
 * mongodb
 * rabbitmq
-
 
 
 
@@ -24,10 +23,7 @@ registry.eoffcn.com/dev:latest
 访问http://localhost:8888即可访问
 
 使用工具连接容器中的mysql数据库
->IP:127.0.0.1 账号:root 密码root
-
-
-
+>IP:127.0.0.1 账号:root 密码:root
 
 
 
