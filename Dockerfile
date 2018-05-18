@@ -147,6 +147,12 @@ echo "export GOOROOT=/usr/local/go" >> ./root/.bashrc && \
 echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
 rm -f go1.9.linux-amd64.tar.gz
 
+#install mongodb
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
+echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
+apt-get update && \
+apt-get install -y mongodb-org
+
 
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
@@ -157,13 +163,6 @@ RUN apt-get install -y phpunit && \
 phpunit --version && \
 composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
 composer global require phpunit/phpunit
-
-
-#install mongodb
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
-apt-get update && \
-apt-get install -y mongodb-org
 
 
 
