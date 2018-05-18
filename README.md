@@ -19,9 +19,19 @@ docker run -d \
 --name dev \
 -p 8888:80 \
 -p 3307:3306 \
-registry.eoffcn.com/dev:stable
+registry.eoffcn.com/dev:latest
 ```
-访问http://localhost:8888
+访问http://localhost:8888即可定位到index.php
+
+使用工具连接容器中的mysql数据库
+>host 127.0.0.1
+username root
+password root
+
+
+
+
+
 
 
 
