@@ -36,7 +36,7 @@ fi
 
 #rabbitmq
 if [ ! -z "$ENABLE_RABBITMQ" ]; then
-    rabb
+    rabbitmq-server &
 fi
 
 

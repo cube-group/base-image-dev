@@ -154,8 +154,6 @@ RUN curl -O https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
 tar -C /usr/local -zxvf go1.9.linux-amd64.tar.gz && \
 echo "export GOOROOT=/usr/local/go" >> ./root/.bashrc && \
 echo "export PATH=\$PATH:/usr/local/go/bin" >> ./root/.bashrc && \
-source ./root/.bashrc && \
-go version && \
 rm -f go1.9.linux-amd64.tar.gz
 
 

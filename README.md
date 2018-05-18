@@ -251,7 +251,6 @@ rabbitmq-server &
 ```
 
 
-
 # 其他实用工具
 * composer
 * phpunit
@@ -263,9 +262,13 @@ rabbitmq-server &
 
 
 
-
 # ENV 环境变量
-
+* ENABLE_PHP_FPM - 启用fpm，1:启用 0:禁用(默认1)
+* ENABLE_MYSQL - 启用fpm，1:启用 0:禁用(默认1)
+* ENABLE_MEMCACHED - 启用memcached，1:启用 0:禁用(默认1)
+* ENABLE_REDIS 1 - 启用redis，1:启用 0:禁用(默认1)
+* ENABLE_RABBITMQ 1 - 启用rabbitmq，1:启用 0:禁用(默认1)
+* ENABLE_MONGODB 1 - 启用mongodb，1:启用 0:禁用(默认1)
 
 
 
