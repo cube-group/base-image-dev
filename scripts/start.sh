@@ -1,5 +1,18 @@
 #!/bin/bash
 
+
+# Increase the nginx default.conf
+if [ ! -z "$APP_PATH_INDEX" ]; then
+ sed -i "s#root /var/www/html;#root ${APP_PATH_INDEX};#g" /etc/nginx/sites-enabled/default
+fi
+
+# Increase the nginx default.conf
+if [ ! -z "$APP_PATH_404" ]; then
+ sed -i "s#root /var/www/errors;#root ${APP_PATH_404};#g" /etc/nginx/sites-enabled/default
+fi
+
+
+
 #php-fpm
 if [ ! -z "$ENABLE_PHP_FPM" ]; then
     /usr/sbin/php-fpm7.2
