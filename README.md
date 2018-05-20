@@ -18,38 +18,36 @@ docker run -d \
 --name dev \
 -p 8888:80 \
 -p 3307:3306 \
+-p 6379:6379 \
+-p 11211:11211 \
+-v 开发项目路径:/www/var/html \
+-v nginx配置:/etc/nginx/sites-enabled/default
 registry.eoffcn.com/dev:stable
 ```
-访问http://localhost:8888 即可访问
+
+访问http://localhost:8888即可访问服务
+注意：
+#### 1.mysql使用
+* 1.自动检测项目路径/devops/create.sql存在就导入
+* 2.初始化账号密码都为root，可通过127.0.0.1和设定的端口号(如3307)连接
+
+#### 2.redis使用
+* 通过127.0.0.1的6379端口访问
+
+#### 3.memcached使用
+* 通过127.0.0.1的11211端口即可访问
+
+#### 4.rabbitmq使用
 
 
-连接容器中的mysql数据库
-* IP - 127.0.0.1 
-* 账号 - root
-* 密码 - root
-
-
-# 容器映射端口 
-如需在外部使用容器软件，需要用-p参数映射相应端口，如DEMO中宿主机用3307映射3306端口
-
-|环境变量|值说明|
-|---|---|
-| APP_PATH | 项目路径, 默认/var/www/html |
-| APP_PATH_INDEX | 项目首页索引目录(index.php index.html),默认/var/www/html |
-| APP_PATH_404 | 404.html存放目录,默认/var/www/html |
-| ENABLE_PHP_FPM | 启用fpm，1:启用 0:禁用(默认1) |
-| ENABLE_MYSQL | 启用fpm，1:启用 0:禁用(默认1) |
-| ENABLE_MEMCACHED | 启用memcached，1:启用 0:禁用(默认1) |
-| ENABLE_REDIS 1 | 启用redis，1:启用 0:禁用(默认1) |
-| ENABLE_RABBITMQ 1 | 启用rabbitmq，1:启用 0:禁用(默认0) |
-| ENABLE_MONGODB 1 | 启用mongodb，1:启用 0:禁用(默认0) |
+#### 5.mongodb使用
 
 
 
 
-
-# PHP
-### 版本
+# 已安装软件
+## PHP
+### version
 ```
 PHP 7.2.5-1+ubuntu16.04.1+deb.sury.org+1 (cli) (built: May  5 2018 04:59:13) ( NTS )
 Copyright (c) 1997-2018 The PHP Group
@@ -57,7 +55,7 @@ Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
     with Zend OPcache v7.2.5-1+ubuntu16.04.1+deb.sury.org+1, Copyright (c) 1999-2018, by Zend Technologies
     with Xdebug v2.6.0, Copyright (c) 2002-2018, by Derick Rethans
 ```
-### 扩展
+### extension
 ```
 [PHP Modules]
 amqp
@@ -138,7 +136,7 @@ Zend OPcache
 
 
 # nginx
-### 版本
+### version
 ```
 /var/www/html # nginx -V
 nginx version: nginx/1.13.7
@@ -168,7 +166,7 @@ configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-p
 
 
 # mysql
-### 版本
+### version
 ```
 mysql> select version();
 +-------------------------+
@@ -183,9 +181,25 @@ mysql> select version();
 |---|---|
 |root|root|
 
-### 连接示例
+### mysql命令行使用
+
+### 命令行连接示例
 ```
-mysql -uroot -proot
+docker exec -it dev mysql -uroot -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 7
+Server version: 5.7.22-0ubuntu0.16.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
 ```
 ### 配置路径
 ```
@@ -211,6 +225,13 @@ redis-server &
 ```
 /etc/redis/redis.conf
 ```
+### redis-cli使用
+```
+docker exec -it dev redis-cli
+127.0.0.1:6379> keys *
+(empty list or set)
+127.0.0.1:6379
+```
 
 --- 
 
@@ -222,7 +243,7 @@ memcached  -d -m 1024 -u root -l 127.0.0.1 -p 11211 -c 1024 -P /tmp/memcached.pi
 停止
 ```
 kill /tmp/memcached.pid
-```
+``
 参数说明
 ```
 -d 启动为守护进程
@@ -237,7 +258,7 @@ kill /tmp/memcached.pid
 ---
 
 # nodejs
-### 版本
+### version
 ```
 root@468696e569db:/etc/redis# node -v
 v8.9.3
@@ -249,7 +270,7 @@ root@468696e569db:/etc/redis# npm -v
 --- 
 
 # go
-### 版本
+### version
 ```
 root@468696e569db:/etc/redis# go version
 go version go1.9 linux/amd64
@@ -259,7 +280,7 @@ go version go1.9 linux/amd64
 --- 
 
 # mongodb
-### 版本
+### version
 ```
 root@9dbe17da8ae2:/# mongo -version
 MongoDB shell version v3.4.15
@@ -285,6 +306,27 @@ mongod --fork --dbpath data --logpath log --logappend
 ```
 rabbitmq-server &
 ```
+
+
+
+
+# 环境变量 
+|环境变量|值说明|
+|---|---|
+| APP_PATH | 项目路径, 默认/var/www/html |
+| APP_PATH_INDEX | 项目首页索引目录(index.php index.html),默认/var/www/html |
+| APP_PATH_404 | 404.html存放目录,默认/var/www/html |
+| ENABLE_PHP_FPM | 启用fpm，1:启用 0:禁用(默认1) |
+| ENABLE_MYSQL | 启用fpm，1:启用 0:禁用(默认1) |
+| ENABLE_MEMCACHED | 启用memcached，1:启用 0:禁用(默认1) |
+| ENABLE_REDIS 1 | 启用redis，1:启用 0:禁用(默认1) |
+| ENABLE_RABBITMQ 1 | 启用rabbitmq，1:启用 0:禁用(默认0) |
+| ENABLE_MONGODB 1 | 启用mongodb，1:启用 0:禁用(默认0) |
+
+
+
+
+
 
 
 # 其他软件
