@@ -25,22 +25,27 @@ docker run -d \
 registry.eoffcn.com/dev:stable
 ```
 
-访问http://localhost:8888即可访问服务
+访问http://localhost:8888或http://127.0.0.1:8888即可访问服务
 注意：
 #### 1.mysql使用
 * 1.自动检测项目路径/devops/create.sql存在就导入
 * 2.初始化账号密码都为root，可通过127.0.0.1和设定的端口号(如3307)连接
 
-#### 2.redis使用
-* 通过127.0.0.1的6379端口访问
 
-#### 3.memcached使用
+### 2.nginx使用
+* 针对不同的框架路由规则不同，需要自己挂载default.conf覆盖容器/etc/nginx/sites-enabled/default文件
+
+#### 3.redis使用
+* 通过127.0.0.1的6379端口访问(无密码)
+
+#### 4.memcached使用
 * 通过127.0.0.1的11211端口访问
 
-#### 4.rabbitmq使用
+#### 5.rabbitmq使用
 
 
-#### 5.mongodb使用
+#### 6.mongodb使用
+
 
 
 
