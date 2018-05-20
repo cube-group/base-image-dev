@@ -124,7 +124,7 @@ RUN apt-get install -y nginx
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/sites-enabled/default
 COPY nginx/404.html ${APP_PATH}
-COPY nginx/index.php ${APP_PATH}
+COPY nginx/info.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
 
 
