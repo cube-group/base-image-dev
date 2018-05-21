@@ -64,6 +64,16 @@ echo $redis->rPop('queue');
 
 
 #### 6.mongodb使用
+```angular2html
+docker exec -it dev mongo
+MongoDB shell version v3.4.15
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 3.4.15
+Server has startup warnings:
+2018-05-21T06:36:43.922+0000 I CONTROL  [initandlisten]
+> db.version()
+3.4.15
+```
 
 
 
