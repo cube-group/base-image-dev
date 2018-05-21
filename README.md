@@ -81,6 +81,7 @@ igbinary
 json
 libxml
 mbstring
+memcache
 memcached
 mongodb
 msgpack
@@ -114,12 +115,10 @@ xmlreader
 xmlwriter
 xsl
 yaf
-Zend OPcache
 zlib
 
 [Zend Modules]
 Xdebug
-Zend OPcache
 ```
 ### 配置文件
 |模式|配置路径|
