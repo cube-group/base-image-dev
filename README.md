@@ -20,6 +20,7 @@ docker run -d \
 -p 3307:3306 \
 -p 6379:6379 \
 -p 11211:11211 \
+-p 27017:27017 \
 -v 开发项目路径:/www/var/html \
 -v nginx配置:/etc/nginx/sites-enabled/default
 registry.eoffcn.com/dev:stable
