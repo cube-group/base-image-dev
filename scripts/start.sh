@@ -65,11 +65,7 @@ fi
 
 #mongodb
 if [ ! -z "$ENABLE_MONGODB" ]; then
-    mkdir -p ${MONGODB_DB_PATH}
-    chmod -R 777 ${MONGODB_DB_PATH}
-    touch ${MONGODB_LOG_FILE}
-    chmod 777 ${MONGODB_LOG_FILE}
-    mongod --dbpath=${MONGODB_DB_PATH} --logpath=${MONGODB_LOG_FILE} --logappend --port=6699 --fork
+    mongod --config /etc/mongod
 fi
 
 
