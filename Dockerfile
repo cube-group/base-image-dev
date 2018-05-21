@@ -163,6 +163,9 @@ apt-get install -y mongodb-org
 RUN apt-get install -y rabbitmq-server
 
 
+
+RUN apt-get install -y php-memcache
+
 ENV MEMCAHED_MEM_SIZE 256MB
 ENV MEMCACHED_CONNECTION 512
 ENV MEMCACHED_PID /tmp/memcached.pid
