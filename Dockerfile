@@ -171,8 +171,7 @@ ENV MEMCACHED_CONNECTION 512
 ENV MEMCACHED_PID /tmp/memcached.pid
 
 ENV MONGODB_DB_PATH /usr/local/mongodb/data
-ENV MONGODB_LOG_PATH /usr/local/mongodb/logs
-RUN mkdir -p /usr/local/mongodb && chmod -R 777 /usr/local/mongodb
+ENV MONGODB_LOG_FILE /usr/local/mongodb/log
 
 
 #copy scripts
