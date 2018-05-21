@@ -247,7 +247,7 @@ memcached  -d -m 1024 -u root -l 127.0.0.1 -p 11211 -c 1024 -P /tmp/memcached.pi
 停止
 ```
 kill /tmp/memcached.pid
-``
+```
 参数说明
 ```
 -d 启动为守护进程
