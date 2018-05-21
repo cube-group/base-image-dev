@@ -25,6 +25,11 @@ if [ ! -z "$ENABLE_REDIS" ]; then
 fi
 
 
+
+
+
+
+
 #mysql
 if [ ! -z "$ENABLE_MYSQL" ]; then
 
@@ -42,7 +47,7 @@ if [ ! -z "$ENABLE_MYSQL" ]; then
         if [ -f ${CREATE_SQL} ] ; then
             "${mysql[@]}" < ${CREATE_SQL}
         fi
-    } &
+    }
 
     "${mysql[@]}" <<-EOSQL
         GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION;
