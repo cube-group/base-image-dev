@@ -29,6 +29,10 @@ registry.eoffcn.com/dev:stable
 #### 1.mysql使用
 * 1.自动检测项目路径devops/create.sql存在就导入
 * 2.初始化账号密码都为root，可通过127.0.0.1和设定的端口号(如3307)连接
+* 3.连接示例
+```
+mysql -h127.0.0.1 -P3307 -uroot -proot
+```
 
 
 ### 2.nginx使用
