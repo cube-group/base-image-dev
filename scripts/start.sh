@@ -65,7 +65,7 @@ fi
 
 #mongodb
 if [ ! -z "$ENABLE_MONGODB" ]; then
-    mongod --config /etc/mongod
+    mongod --config /etc/mongod.conf
 fi
 
 
