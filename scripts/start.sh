@@ -65,7 +65,7 @@ fi
 
 #mongodb
 if [ ! -z "$ENABLE_MONGODB" ]; then
-    mongod --fork --dbpath data --logpath log --logappend
+    mongod --dbpath=${MONGODB_DB_PATH} --logpath=${MONGODB_LOG_PATH} --logappend --port=6699 --fork
 fi
 
 
@@ -73,9 +73,6 @@ fi
 if [ ! -z "$ENABLE_RABBITMQ" ]; then
     rabbitmq-server &
 fi
-
-
-
 
 
 #nginx 前台运行
