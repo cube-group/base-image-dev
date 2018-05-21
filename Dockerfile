@@ -62,7 +62,7 @@ apt-get update && \
 apt-get install -y php7.2-fpm && \
 #php ext
 apt-get install -y php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-xml php7.2-opcache php7.2-gd \
-php7.2-mongodb php7.2-redis php7.2-memcached php7.2-dev && \
+php7.2-mongodb php7.2-redis php7.2-memcached php7.2-dev php7.2-memcache && \
 #yaf ext
 pecl install yaf && \
 #xdebug ext
@@ -120,13 +120,6 @@ composer global require phpunit/phpunit
 
 #install nginx
 RUN apt-get install -y nginx
-#nginx conf
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/default.conf /etc/nginx/sites-enabled/default
-COPY nginx/404.html ${APP_PATH}
-COPY nginx/info.php ${APP_PATH}
-COPY nginx/index.html ${APP_PATH}
-
 
 #install mysql
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server mysql-server mysql-client && \
@@ -163,15 +156,13 @@ apt-get install -y mongodb-org
 RUN apt-get install -y rabbitmq-server
 
 
-
-RUN apt-get install -y php-memcache
 ENV MEMCAHED_MEM_SIZE 256MB
 ENV MEMCACHED_CONNECTION 512
 ENV MEMCACHED_PID /tmp/memcached.pid
 
 COPY mongodb/mongod.conf /etc/mongod.conf
-ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 ENV MONGODB_DB_PATH /var/lib/mongodb
+ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 
 
 #nginx conf
