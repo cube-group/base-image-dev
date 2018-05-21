@@ -162,8 +162,14 @@ apt-get install -y mongodb-org
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
 
+
+ENV MEMCAHED_MEM_SIZE 256MB
+ENV MEMCACHED_CONNECTION 512
+ENV MEMCACHED_PID /tmp/memcached.pid
+
 #copy scripts
-COPY scripts/ /extra
+COPY test/ /test
+COPY scripts/ /scripts
 
 EXPOSE 80
 EXPOSE 9000
@@ -177,7 +183,7 @@ WORKDIR $APP_PATH
 
 STOPSIGNAL SIGTERM
 
-CMD ["bash","/extra/start.sh"]
+CMD ["bash","/scripts/start.sh"]
 
 
 
