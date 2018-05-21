@@ -31,11 +31,9 @@ fi
 
 
 #mysql
-if [ ! -z "$ENABLE_MYSQL" ]; then
+if [ "$ENABLE_MYSQL" == "1" ]; then
 
     service mysql start
-
-
 
     PASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX)
     install /dev/null -m0600 -omysql -gmysql "$PASSFILE"
@@ -58,19 +56,19 @@ fi
 
 
 #memcached
-if [ ! -z "$ENABLE_MEMCACHED" ]; then
+if [ "$ENABLE_MEMCACHED" == "1"  ]; then
     memcached  -d  -u root -l 127.0.0.1 -p 11211 -m ${MEMCACHE_MEM_SIZE} -c ${MEMCACHED_CONNECTION} -P ${MEMCACHED_PID}
 fi
 
 
 #mongodb
-if [ ! -z "$ENABLE_MONGODB" ]; then
+if [ "$ENABLE_MONGODB"  == "1" ]; then
     mongod --config /etc/mongod.conf &
 fi
 
 
 #rabbitmq
-if [ ! -z "$ENABLE_RABBITMQ" ]; then
+if [ "$ENABLE_RABBITMQ"  == "1" ]; then
     rabbitmq-server &
 fi
 
