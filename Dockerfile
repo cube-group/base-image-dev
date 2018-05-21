@@ -174,6 +174,13 @@ ENV MONGODB_DB_PATH /var/lib/mongodb
 ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 
 
+#nginx conf
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf /etc/nginx/sites-enabled/default
+COPY nginx/404.html ${APP_PATH}
+COPY nginx/info.php ${APP_PATH}
+COPY nginx/index.html ${APP_PATH}
+
 
 #copy scripts
 COPY test/ /test
