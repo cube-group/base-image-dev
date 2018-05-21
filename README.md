@@ -60,11 +60,7 @@ echo $redis->rPop('queue');
   echo $mem->get('key');
 ```
 
-
-#### 5.rabbitmq使用
-
-
-#### 6.mongodb使用
+#### 5.mongodb使用
 ```angular2html
 docker exec -it dev mongo
 MongoDB shell version v3.4.15
@@ -75,6 +71,9 @@ Server has startup warnings:
 > db.version()
 3.4.15
 ```
+
+#### 6.rabbitmq使用
+
 
 
 
