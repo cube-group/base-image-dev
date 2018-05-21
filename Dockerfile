@@ -170,8 +170,8 @@ ENV MEMCACHED_CONNECTION 512
 ENV MEMCACHED_PID /tmp/memcached.pid
 
 COPY mongodb/mongod.conf /etc/mongod.conf
-ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 ENV MONGODB_DB_PATH /var/lib/mongodb
+ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 
 
 
