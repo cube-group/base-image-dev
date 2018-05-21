@@ -344,20 +344,20 @@ rabbitmq-server &
 
 
 # 环境变量 
-|环境变量|值说明|
-|---|---|
-| APP_PATH | 项目路径, 默认/var/www/html |
-| APP_PATH_INDEX | 项目首页索引目录(index.php index.html),默认/var/www/html |
-| APP_PATH_404 | 404.html存放目录,默认/var/www/html |
-| ENABLE_PHP_FPM | 启用fpm，1:启用 0:禁用(默认1) |
-| ENABLE_MYSQL | 启用fpm，1:启用 0:禁用(默认1) |
-| ENABLE_MEMCACHED | 启用memcached，1:启用 0:禁用(默认1) |
-| ENABLE_REDIS | 启用redis，1:启用 0:禁用(默认1) |
-| ENABLE_RABBITMQ | 启用rabbitmq，1:启用 0:禁用(默认0) |
-| ENABLE_MONGODB | 启用mongodb，1:启用 0:禁用(默认0) |
-| MEMCAHED_MEM_SIZE | memcache使用内存大小 默认256MB |
-| MEMCACHED_CONNECTION | memcache并发连接数 512 |
-| MEMCACHED_PID | memcache启动pid文件 默认/tmp/memcached.pid |
+|环境变量|说明|默认值|
+|---|---|---|
+| APP_PATH | 项目路径 | /var/www/html |
+| APP_PATH_INDEX | 项目首页索引目录(index.php index.html)|/var/www/html |
+| APP_PATH_404 | 404.html存放目录|/var/www/html |
+| USE_FPM | 启用fpm，1:启用 0:禁用|1|
+| USE_MYSQL | 启用mysql，1:启用 0:禁用 |1|
+| USE_MEMCACHED | 启用memcached，1:启用 0:禁用 | 0|
+| USE_REDIS | 启用redis，1:启用 0:禁用 | 0|
+| USE_MONGODB | 启用mongodb，1:启用 0:禁用 |0|
+| USE_RABBITMQ | 启用rabbitmq，1:启用 0:禁用 |0|
+| MEMCAHED_MEM_SIZE | memcache使用内存大小 默认 |256MB|
+| MEMCACHED_CONNECTION | memcache并发连接数  |512|
+| MEMCACHED_PID | memcache启动pid文件|/tmp/memcached.pid |
 
 
 

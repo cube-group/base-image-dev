@@ -14,13 +14,13 @@ fi
 
 
 #php-fpm
-if [ ! -z "$ENABLE_PHP_FPM" ]; then
+if [ ! -z "$USE_FPM" ]; then
     /usr/sbin/php-fpm7.2
 fi
 
 
 #redis
-if [ ! -z "$ENABLE_REDIS" ]; then
+if [ ! -z "$USE_REDIS" ]; then
     redis-server &
 fi
 
@@ -31,7 +31,7 @@ fi
 
 
 #mysql
-if [ "$ENABLE_MYSQL" == "1" ]; then
+if [ "$USE_MYSQL" == "1" ]; then
 
     service mysql start
 
@@ -56,19 +56,19 @@ fi
 
 
 #memcached
-if [ "$ENABLE_MEMCACHED" == "1"  ]; then
+if [ "$USE_MEMCACHED" == "1"  ]; then
     memcached  -d  -u root -l 127.0.0.1 -p 11211 -m ${MEMCACHE_MEM_SIZE} -c ${MEMCACHED_CONNECTION} -P ${MEMCACHED_PID}
 fi
 
 
 #mongodb
-if [ "$ENABLE_MONGODB"  == "1" ]; then
+if [ "$USE_MONGODB"  == "1" ]; then
     mongod --config /etc/mongod.conf &
 fi
 
 
 #rabbitmq
-if [ "$ENABLE_RABBITMQ"  == "1" ]; then
+if [ "$USE_RABBITMQ"  == "1" ]; then
     rabbitmq-server &
 fi
 

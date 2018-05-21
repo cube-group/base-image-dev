@@ -4,14 +4,6 @@ MAINTAINER chenqionghe development "chenqionghe@sina.com"
 
 USER root
 
-#软件开启环境变量
-ENV ENABLE_PHP_FPM 1
-ENV ENABLE_MYSQL 1
-ENV ENABLE_MEMCACHED 1
-ENV ENABLE_REDIS 1
-ENV ENABLE_RABBITMQ 0
-ENV ENABLE_MONGODB 0
-
 #php环境变量
 ENV PHP_CLI_CONF_DIR /etc/php/7.2/cli/conf.d
 ENV PHP_FPM_CONF_DIR /etc/php/7.2/fpm/conf.d
@@ -156,13 +148,20 @@ apt-get install -y mongodb-org
 RUN apt-get install -y rabbitmq-server
 
 
+
+#memcached
 ENV MEMCAHED_MEM_SIZE 256MB
 ENV MEMCACHED_CONNECTION 512
 ENV MEMCACHED_PID /tmp/memcached.pid
 
-COPY mongodb/mongod.conf /etc/mongod.conf
-ENV MONGODB_DB_PATH /var/lib/mongodb
-ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
+
+#软件开启环境变量
+ENV USE_FPM 1
+ENV USE_MYSQL 1
+ENV USE_MEMCACHED 0
+ENV USE_REDIS 0
+ENV USE_MONGODB 0
+ENV USE_RABBITMQ 0
 
 
 #nginx conf
@@ -171,6 +170,11 @@ COPY nginx/default.conf /etc/nginx/sites-enabled/default
 COPY nginx/404.html ${APP_PATH}
 COPY nginx/info.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
+
+#mongodb conf
+COPY mongodb/mongod.conf /etc/mongod.conf
+ENV MONGODB_DB_PATH /var/lib/mongodb
+ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 
 
 #copy scripts
