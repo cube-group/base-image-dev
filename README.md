@@ -46,7 +46,6 @@ $redis = new Redis();
 $redis->connect('127.0.0.1', 6379);
 $redis->lPush("queue", 1, 2, 3, 4, 5);
 echo $redis->rPop('queue');
-
 ```
 
 
