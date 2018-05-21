@@ -36,9 +36,26 @@ registry.eoffcn.com/dev:stable
 
 #### 3.redis使用
 * 通过127.0.0.1的6379端口访问(无密码)
+* php连接示例
+```
+$redis = new Redis();
+$redis->connect('127.0.0.1', 6379);
+$redis->lPush("queue", 1, 2, 3, 4, 5);
+echo $redis->rPop('queue');
+
+```
+
 
 #### 4.memcached使用
 * 通过127.0.0.1的11211端口访问
+* php连接示例代码
+```
+  $mem = new Memcache;
+  $mem->connect('127.0.0.1', 11211);
+  $mem->set('key', 'This is a test!', 0, 60);
+  echo $mem->get('key');
+```
+
 
 #### 5.rabbitmq使用
 
