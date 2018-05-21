@@ -59,7 +59,7 @@ fi
 
 #memcached
 if [ ! -z "$ENABLE_MEMCACHED" ]; then
-    memcached  -d  -u root -l 127.0.0.1 -p 11211 -m ${MEMCACHE_MEM_SIZE} -c ${MEMCACHED_} -P ${MEMCACHED_PID}
+    memcached  -d  -u root -l 127.0.0.1 -p 11211 -m ${MEMCACHE_MEM_SIZE} -c ${MEMCACHED_CONNECTION} -P ${MEMCACHED_PID}
 fi
 
 
