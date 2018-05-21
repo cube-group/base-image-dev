@@ -339,9 +339,12 @@ rabbitmq-server &
 | ENABLE_PHP_FPM | 启用fpm，1:启用 0:禁用(默认1) |
 | ENABLE_MYSQL | 启用fpm，1:启用 0:禁用(默认1) |
 | ENABLE_MEMCACHED | 启用memcached，1:启用 0:禁用(默认1) |
-| ENABLE_REDIS 1 | 启用redis，1:启用 0:禁用(默认1) |
-| ENABLE_RABBITMQ 1 | 启用rabbitmq，1:启用 0:禁用(默认0) |
-| ENABLE_MONGODB 1 | 启用mongodb，1:启用 0:禁用(默认0) |
+| ENABLE_REDIS | 启用redis，1:启用 0:禁用(默认1) |
+| ENABLE_RABBITMQ | 启用rabbitmq，1:启用 0:禁用(默认0) |
+| ENABLE_MONGODB | 启用mongodb，1:启用 0:禁用(默认0) |
+| MEMCAHED_MEM_SIZE | memcache使用内存大小 默认256MB |
+| MEMCACHED_CONNECTION | memcache并发连接数 512 |
+| MEMCACHED_PID | memcache启动pid文件 默认/tmp/memcached.pid |
 
 
 
