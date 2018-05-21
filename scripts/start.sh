@@ -67,4 +67,5 @@ fi
 if [ ! -z "$APP_PATH_404" ]; then
  sed -i "s#root /var/www/errors;#root ${APP_PATH_404};#g" /etc/nginx/sites-enabled/default
 fi
+
 /usr/sbin/nginx -g "daemon off; error_log /dev/stderr info;"
