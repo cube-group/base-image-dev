@@ -56,7 +56,9 @@ fi
 ########################################## rabbitmq ##########################################
 if [ "$USE_RABBITMQ" == "1" ]; then
     rabbitmq-server &
-    sleep 1 #等待启动再执行rabbitmq-plugins
+    sleep 1 #等待rabbit启动
+    rabbitmqctl add_user admin admin
+    rabbitmqctl set_user_tags admin administrator
     rabbitmq-plugins enable rabbitmq_management
 fi
 
