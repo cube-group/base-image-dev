@@ -58,7 +58,6 @@ if [ "$USE_RABBITMQ" == "1" ]; then
     rabbitmq-server &
     sleep 1 #等待启动再执行rabbitmq-plugins
     rabbitmq-plugins enable rabbitmq_management
-
 fi
 
 
