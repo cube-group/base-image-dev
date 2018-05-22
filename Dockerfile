@@ -77,24 +77,6 @@ sed -i "s#listen = /run/php/php7.2-fpm.sock#listen = ${FPM_SOCK_FILE}#g" ${FPM_C
 sed -i "s#;slowlog = log/\$pool.log.slow#slowlog = ${FPM_SLOWLOG}#g" ${FPM_CONF} && \
 mkdir /run/php
 
-#php.ini
-COPY ./php-fpm/amqp.ini ${PHP_EXT_CONF_LINK_DIR}/amqp.ini
-COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
-COPY ./php-fpm/opcache.ini ${PHP_EXT_CONF_LINK_DIR}/opcache.ini
-COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_LINK_DIR}/yaf.ini
-COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_LINK_DIR}/dev.ini
-RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_FPM_CONF_DIR}/opcache.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_FPM_CONF_DIR}/yaf.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/amqp.ini ${PHP_FPM_CONF_DIR}/amqp.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_FPM_CONF_DIR}/dev.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_CLI_CONF_DIR}/xdebug.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/opcache.ini ${PHP_CLI_CONF_DIR}/opcache.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_CLI_CONF_DIR}/yaf.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/amqp.ini ${PHP_CLI_CONF_DIR}/amqp.ini && \
-    ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini && \
-    ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
-
 
 #install composer
 RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
@@ -149,11 +131,15 @@ RUN apt-get install -y rabbitmq-server
 
 
 
+#mongodb conf
+COPY mongodb/mongod.conf /etc/mongod.conf
+ENV MONGODB_DB_PATH /var/lib/mongodb
+ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
+
 #memcached
 ENV MEMCAHED_MEM_SIZE 256MB
 ENV MEMCACHED_CONNECTION 512
 ENV MEMCACHED_PID /tmp/memcached.pid
-
 
 #软件开启环境变量
 ENV USE_FPM 1
@@ -163,7 +149,6 @@ ENV USE_MEMCACHED 0
 ENV USE_MONGODB 0
 ENV USE_RABBITMQ 0
 
-
 #nginx conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/sites-enabled/default
@@ -171,13 +156,23 @@ COPY nginx/404.html ${APP_PATH}
 COPY nginx/info.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
 
-#mongodb conf
-COPY mongodb/mongod.conf /etc/mongod.conf
-ENV MONGODB_DB_PATH /var/lib/mongodb
-ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
-
-#xdebug
+#php.ini
+COPY ./php-fpm/amqp.ini ${PHP_EXT_CONF_LINK_DIR}/amqp.ini
 COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
+COPY ./php-fpm/yaf.ini ${PHP_EXT_CONF_LINK_DIR}/yaf.ini
+COPY ./php-fpm/dev.ini ${PHP_EXT_CONF_LINK_DIR}/dev.ini
+RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_FPM_CONF_DIR}/yaf.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/amqp.ini ${PHP_FPM_CONF_DIR}/amqp.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_FPM_CONF_DIR}/dev.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_CLI_CONF_DIR}/xdebug.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/yaf.ini ${PHP_CLI_CONF_DIR}/yaf.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/amqp.ini ${PHP_CLI_CONF_DIR}/amqp.ini && \
+    ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini && \
+    ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
+
+#vim config
+./vim/.vimrc /root/.vimrc
 
 #copy scripts
 COPY test/ /test
