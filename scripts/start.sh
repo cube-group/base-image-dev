@@ -48,13 +48,13 @@ fi
 
 
 ########################################## mongodb ##########################################
-if [ "$USE_MONGODB"  == "1" ]; then
+if [ "$USE_MONGODB" == "1" ]; then
     mongod --config /etc/mongod.conf &
 fi
 
 
 ########################################## rabbitmq ##########################################
-if [ "$USE_RABBITMQ"  == "1" ]; then
+if [ "$USE_RABBITMQ" == "1" ]; then
     rabbitmq-server &
     rabbitmq-plugins enable rabbitmq_management
 
