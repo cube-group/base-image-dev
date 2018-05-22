@@ -56,6 +56,8 @@ fi
 ########################################## rabbitmq ##########################################
 if [ "$USE_RABBITMQ"  == "1" ]; then
     rabbitmq-server &
+    rabbitmq-plugins enable rabbitmq_management
+
 fi
 
 
