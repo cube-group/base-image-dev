@@ -172,7 +172,7 @@ RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && 
     ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
 
 #vim config
-./vim/.vimrc /root/.vimrc
+COPY ./vim/.vimrc /root/.vimrc
 
 #copy scripts
 COPY test/ /test
