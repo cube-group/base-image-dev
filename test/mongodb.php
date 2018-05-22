@@ -1,17 +1,25 @@
 <?php
 
-// 链接服务器
-$m = new MongoClient();
-// 选择一个数据库
-$db = $m->school;
-// 选择一个集合（ Mongo 的“集合”相当于关系型数据库的“表”）
-$collection = $db->student;
+$manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
-$fruitQuery = array('stu_id' => array('$gte'=>15,'$lte'=>22)); //设置查询条件
-$field=array('_id'=>0);//设置显示字段
+// 插入数据
+$bulk = new MongoDB\Driver\BulkWrite;
+$bulk->insert(['x' => 1, 'name'=>'菜鸟教程', 'url' => 'http://www.runoob.com']);
+$bulk->insert(['x' => 2, 'name'=>'Google', 'url' => 'http://www.google.com']);
+$bulk->insert(['x' => 3, 'name'=>'taobao', 'url' => 'http://www.taobao.com']);
+$manager->executeBulkWrite('test.sites', $bulk);
 
-$res=$collection->find($fruitQuery,$field);
+$filter = ['x' => ['$gt' => 1]];
+$options = [
+    'projection' => ['_id' => 0],
+    'sort' => ['x' => -1],
+];
 
-foreach ($res as $stu) {
-var_dump($stu);
+// 查询数据
+$query = new MongoDB\Driver\Query($filter, $options);
+$cursor = $manager->executeQuery('test.sites', $query);
+
+foreach ($cursor as $document) {
+    var_dump($document);
 }
+?>

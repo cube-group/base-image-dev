@@ -173,9 +173,11 @@ COPY nginx/index.html ${APP_PATH}
 
 #mongodb conf
 COPY mongodb/mongod.conf /etc/mongod.conf
-ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 ENV MONGODB_DB_PATH /var/lib/mongodb
+ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 
+#xdebug
+COPY ./php-fpm/xdebug.ini ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini
 
 #copy scripts
 COPY test/ /test
