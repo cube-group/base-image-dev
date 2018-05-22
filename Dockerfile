@@ -129,7 +129,8 @@ apt-get install -y mongodb-org
 #install rabbimq
 RUN apt-get install -y rabbitmq-server
 
-
+#install php-zip
+RUN apt-get install -y php7.2-zip
 
 #mongodb conf
 COPY mongodb/mongod.conf /etc/mongod.conf
