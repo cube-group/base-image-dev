@@ -132,6 +132,9 @@ RUN apt-get install -y rabbitmq-server
 #install php-zip
 RUN apt-get install -y php7.2-zip
 
+#install ping
+RUN apt-get install -y iputils-ping
+
 #mongodb conf
 COPY mongodb/mongod.conf /etc/mongod.conf
 ENV MONGODB_DB_PATH /var/lib/mongodb
