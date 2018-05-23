@@ -139,23 +139,16 @@ ENV MONGODB_LOG_FILE /var/log/mongodb/mongod.log
 
 #memcached
 ENV MEMCAHED_MEM_SIZE 256MB
-ENV MEMCACHED_CONNECTION 512
 ENV MEMCACHED_PID /tmp/memcached.pid
+ENV MEMCACHED_CONNECTION 512
 
 #软件开启环境变量
 ENV USE_FPM 1
 ENV USE_MYSQL 1
 ENV USE_REDIS 0
 ENV USE_MEMCACHED 0
-ENV USE_RABBITMQ 0
 ENV USE_MONGODB 0
-
-#nginx conf
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/default.conf /etc/nginx/sites-enabled/default
-COPY nginx/404.html ${APP_PATH}
-COPY nginx/info.php ${APP_PATH}
-COPY nginx/index.html ${APP_PATH}
+ENV USE_RABBITMQ 0
 
 #php.ini
 COPY ./php-fpm/amqp.ini ${PHP_EXT_CONF_LINK_DIR}/amqp.ini
@@ -171,6 +164,14 @@ RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && 
     ln -s ${PHP_EXT_CONF_LINK_DIR}/amqp.ini ${PHP_CLI_CONF_DIR}/amqp.ini && \
     ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini && \
     ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm
+
+
+#nginx conf
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf /etc/nginx/sites-enabled/default
+COPY nginx/404.html ${APP_PATH}
+COPY nginx/info.php ${APP_PATH}
+COPY nginx/index.html ${APP_PATH}
 
 
 #copy scripts
