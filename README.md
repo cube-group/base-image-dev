@@ -23,7 +23,7 @@ docker run -d \
 -p 27017:27017 \
 -v 开发项目路径:/var/www/html \
 -v nginx配置:/etc/nginx/sites-enabled/default
-registry.eoffcn.com/dev:stable
+registry.eoffcn.com/dev:1.0
 ```
 
 访问http://localhost:8888或http://127.0.0.1:8888即可访问服务

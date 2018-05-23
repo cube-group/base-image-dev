@@ -58,6 +58,7 @@ if [ "$USE_RABBITMQ" == "1" ]; then
     rabbitmqctl add_user admin admin
     rabbitmqctl set_user_tags admin administrator
     rabbitmq-plugins enable rabbitmq_management
+    rabbitmqctl  set_permissions -p "/" admin ".*" ".*" ".*"
 fi
 
 
