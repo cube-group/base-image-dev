@@ -265,7 +265,6 @@ yaf
 
 
 
-
 ### 3.3 redis
 * 环境变量```USE_REDIS```设置为1开启
 * 端口：6379 (无密码)
@@ -288,18 +287,7 @@ echo $redis->rPop('queue');
   echo $mem->get('key');
 ```
 
-
 ### 3.5 mongodb
-* 环境变量```USE_MONGODB```设置为1开启
-* 端口：27017端口
-
-
-### 3.6 rabbitmq
-* 环境变量```USE_RABBIMQ```设置为1开启
-* 端口：5672
-* web管理界面：localhost:15672，账号密码均为```admin```
-
-### 3.7 mongodb
 * 环境变量```USE_MONGODB```设置为1开启
 * 端口：27017 (无密码)
 * php连接示例代码
@@ -313,7 +301,14 @@ $bulk->insert(['x' => 3, 'name' => 'baidu', 'url' => 'http://www.baidu.com']);
 $manager->executeBulkWrite('test.sites', $bulk);
 ```
 
-### 3.8 nginx
+### 3.6 rabbitmq
+* 环境变量```USE_RABBIMQ```设置为1开启
+* 端口：5672
+* web管理界面：localhost:15672，账号密码均为```admin```
+
+
+
+### 3.7 nginx
 * 主配置
 ```
 /etc/nginx/nginx.conf
@@ -329,11 +324,5 @@ $manager->executeBulkWrite('test.sites', $bulk);
 |停止|nginx -s stop|
 |重新载入配置|nginx -s reload|
 |检测配置是否正确|nginx -t|
-
-
-
-### 3.9.rabbitmq使用
-* 默认账号密码admin，端口号5672 15672
-
 
 
