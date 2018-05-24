@@ -318,6 +318,7 @@ $manager->executeBulkWrite('test.sites', $bulk);
 /etc/nginx/sites-enabled
 ```
 * nginx管理
+
 |类型|指令|
 |---|---|
 |启动|nginx|
