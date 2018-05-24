@@ -251,12 +251,14 @@ yaf
 ```
 
 * 配置文件
+
 |模式|配置路径|
 |---|---|
 |cli|/etc/php/7.2/cli/conf.d|
 |fpm|/etc/php/7.2/fpm/conf.d|
 
 * php-fpm进程管理
+
 |类型|命令|
 |---|---|
 |启动|```php-fpm```|
