@@ -27,15 +27,7 @@
 
 # 2.快速使用
 
-* 绑定host
-
-```
-47.95.123.222 registry.eoffcn.com
-```
-
 * 登录仓库
-
-账号```inner```，密码```1qaz2wsx3edc```
 
 ```
 docker login registry.eoffcn.com
