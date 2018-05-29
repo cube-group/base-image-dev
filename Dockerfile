@@ -167,17 +167,15 @@ RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && 
     ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
-
-#msyql cnf
-COPY mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
-
-
 #nginx conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/sites-enabled/default
 COPY nginx/404.html ${APP_PATH}
 COPY nginx/info.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
+
+#msyql cnf
+COPY mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 
 #copy scripts
 COPY test/ /test
