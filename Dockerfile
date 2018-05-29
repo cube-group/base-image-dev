@@ -176,6 +176,9 @@ COPY nginx/info.php ${APP_PATH}
 COPY nginx/index.html ${APP_PATH}
 
 
+#msyql cnf
+COPY mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+
 #copy scripts
 COPY test/ /test
 COPY scripts/ /scripts
