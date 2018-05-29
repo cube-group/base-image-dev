@@ -170,6 +170,7 @@ RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && 
 
 #msyql cnf
 COPY mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+COPY mysql/mysql.cnf /etc/mysql/conf.d/mysql.cnf
 
 #nginx conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf

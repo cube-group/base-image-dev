@@ -45,6 +45,7 @@ bind-address	= 0.0.0.0
 #解决中文乱码
 character_set_server=utf8
 collation_server=utf8_general_ci
+character_set_database=utf8
 
 #
 # * Fine Tuning
