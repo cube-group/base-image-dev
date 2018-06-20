@@ -165,7 +165,9 @@ RUN ln -s ${PHP_EXT_CONF_LINK_DIR}/xdebug.ini ${PHP_FPM_CONF_DIR}/xdebug.ini && 
     ln -s ${PHP_EXT_CONF_LINK_DIR}/dev.ini ${PHP_CLI_CONF_DIR}/dev.ini && \
     ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm && \
     ln -sf /dev/stdout /var/log/nginx/access.log && \
-    ln -sf /dev/stderr /var/log/nginx/error.log
+    ln -sf /dev/stderr /var/log/nginx/error.log && \
+    sed -i "s#;clear_env = no#clear_env = no#g" ${FPM_CONF}
+
 
 
 #msyql cnf
